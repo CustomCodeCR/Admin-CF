@@ -12,6 +12,7 @@ import { MenuComponent } from '@shared/components/reusables/menu/menu.component'
 import { ExportExcelComponent } from '@shared/components/reusables/export-excel/export-excel.component';
 import { FilterDateRangeYmdComponent } from '@shared/components/reusables/filter-date-range-ymd/filter-date-range-ymd.component';
 import { ButtonResetFiltersComponent } from '@shared/components/reusables/button-reset-filters/button-reset-filters.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { ButtonResetFiltersComponent } from '@shared/components/reusables/button
     FilterDateRangeYmdComponent,
     ButtonResetFiltersComponent,
     ImgSelectorComponent,
+    MatDatepickerModule
   ]
 })
 export class ItinerarioModule { }

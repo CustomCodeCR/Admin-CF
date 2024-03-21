@@ -5,7 +5,6 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AlertService } from "@shared/services/alert.service";
 import { ItinerarioService } from "../../services/itinerario.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { DocumentTypeService } from "@shared/services/document-type.service";
 
 @Component({
   selector: "vex-itinerario-manage",
@@ -23,10 +22,10 @@ export class ItinerarioManageComponent implements OnInit {
       id: [0, [Validators.required]],
       pol: ["", [Validators.required]],
       pod: ["", [Validators.required]],
-      closing: [""],
-      etd: ["", [Validators.required]],
-      eta: [""],
-      carrier: [""],
+      closing: [new Date(), [Validators.required]],
+      etd: [new Date(), [Validators.required]],
+      eta: [new Date(), [Validators.required]],
+      carrier: ["", [Validators.required]],
       vessel: ["", [Validators.required]],
       voyage: [""],
       estado: ["", [Validators.required]],
@@ -39,7 +38,6 @@ export class ItinerarioManageComponent implements OnInit {
     private _alert: AlertService,
     private _itinerarioService: ItinerarioService,
     public _dialogRef: MatDialogRef<ItinerarioManageComponent>,
-    private _documentTypeService: DocumentTypeService
   ) {
     this.initForm();
   }
@@ -52,13 +50,17 @@ export class ItinerarioManageComponent implements OnInit {
 
   clientById(id: number): void {
     this._itinerarioService.ItinerarioById(id).subscribe((resp) => {
+      const etd = new Date(resp.etd)
+      const eta = new Date(resp.etd)
+      const closing = new Date(resp.etd)
+
       this.form.reset({
         id: resp.id,
         pol: resp.pol,
         pod: resp.pod,
-        closing: resp.closing,
-        etd: resp.etd,
-        eta: resp.eta,
+        closing: closing,
+        etd: etd,
+        eta: eta,
         carrier: resp.carrier,
         vessel: resp.vessel,
         voyage: resp.voyage,
