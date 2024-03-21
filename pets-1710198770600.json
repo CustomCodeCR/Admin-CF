@@ -1,0 +1,20 @@
+[
+  {
+    "color": "green",
+    "type": "turtle",
+    "size": "nano",
+    "name": "Leo"
+  },
+  {
+    "color": "akita",
+    "type": "dog",
+    "size": "nano",
+    "name": "Cody"
+  },
+  {
+    "color": "gray",
+    "type": "totoro",
+    "size": "nano",
+    "name": "Max"
+  }
+]

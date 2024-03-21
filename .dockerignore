@@ -1,0 +1,11 @@
+# Archivos y directorios generados por node/npm/yarn
+node_modules
+/dist
+/.cache
+
+# Otros archivos de desarrollo y configuración que no son necesarios en la imagen Docker
+.git
+.gitignore
+.eslintcache
+.idea
+.vscode
