@@ -1,0 +1,59 @@
+<form (ngSubmit)="clientSave()" [formGroup]="form">
+    <div mat-dialog-title class="flex justify-between">
+        <h2 class="headline m-0 text-xl text-accent">
+            <strong>Gestión de Empleo</strong>
+        </h2>
+        <button class="text-secondary" mat-dialog-close mat-icon-button>
+            <mat-icon [icIcon]="icClose"></mat-icon>
+        </button>
+    </div>
+    <mat-dialog-content>
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Titulo</mat-label>
+            <input matInput formControlName="titulo" />
+            <mat-error *ngIf="form.get('titulo').hasError('required')">
+                Campo Titulo es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Puesto</mat-label>
+            <input matInput formControlName="puesto" />
+            <mat-error *ngIf="form.get('puesto').hasError('required')">
+                Campo Puesto es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <div fxLayout="row" fxLayoutGap="16px">
+            <mat-form-field appearance="outline" fxFlex="w-full">
+                <mat-label>Descripción</mat-label>
+                <textarea matInput formControlName="descripcion"></textarea>
+                <mat-error *ngIf="form.get('descripcion').hasError('required')">
+                    Campo Descripción es requerido.
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Estado</mat-label>
+            <mat-select formControlName="estado">
+                <mat-option *ngFor="let state of configs.statesSelect" [value]="state.value">
+                    {{ state.label }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('estado').hasError('required')">
+                Campo Estado es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <app-img-selector [urlCurrentImg]="this.form.get('imagen').value"
+            (selectedImage)="selectedImage($event)"></app-img-selector>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>CANCELAR</button>
+        <button color="purple" class="bg-accent text-accent-contrast" mat-button type="submit"
+            [disabled]="form.invalid">
+            GUARDAR
+        </button>
+    </mat-dialog-actions>
+</form>

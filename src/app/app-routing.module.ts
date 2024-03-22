@@ -9,15 +9,12 @@ const childrenRoutes: VexRoutes = [
   {
     path: "itinerarios",
     loadChildren: () =>
-      import("./pages/itinerario/itinerario.module").then((m) => m.ItinerarioModule),
+      import("./pages/itinerario/itinerario.module").then(
+        (m) => m.ItinerarioModule
+      ),
     data: {
       containerEnabled: true,
     },
-  },
-  {
-    path: "proveedores",
-    loadChildren: () =>
-      import("./pages/provider/provider.module").then((m) => m.ProviderModule),
   },
   {
     path: "usuarios",
@@ -25,16 +22,14 @@ const childrenRoutes: VexRoutes = [
       import("./pages/usuario/usuario.module").then((m) => m.UsuarioModule),
   },
   {
-    path: "almacenes",
+    path: "empleos",
     loadChildren: () =>
-      import("./pages/warehouse/warehouse.module").then(
-        (m) => m.WarehouseModule
-      ),
+      import("./pages/empleo/empleo.module").then((m) => m.EmpleoModule),
   },
   {
-    path: "productos",
+    path: "noticias",
     loadChildren: () =>
-      import("./pages/product/product.module").then((m) => m.ProductModule),
+      import("./pages/noticia/noticia.module").then((m) => m.NoticiaModule),
   },
   {
     path: "**",

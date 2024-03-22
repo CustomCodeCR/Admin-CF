@@ -85,26 +85,20 @@ export class AppComponent {
       },
       {
         type: "dropdown",
-        label: "Catálogo",
+        label: "Publicaciones",
         icon: IconsService.prototype.getIcon("icManage"),
         children: [
           {
             type: "link",
-            label: "Categorias",
-            route: "categorias",
+            label: "Empleos",
+            route: "empleos",
           },
           {
             type: "link",
-            label: "Productos",
-            route: "productos",
+            label: "Noticias",
+            route: "noticias",
           },
         ],
-      },
-      {
-        type: "link",
-        label: "Proveedores",
-        route: "proveedores",
-        icon: IconsService.prototype.getIcon("icProvider"),
       },
     ];
   }
