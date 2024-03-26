@@ -7,5 +7,10 @@ export interface UsuarioRequest {
   cliente: string;
   idRol: number;
   imagen: File;
+  nombreEmpresa: string;
+  telefono: string;
+  direccion: string;
+  pais: string;
+  paginas: string;
   estado: number;
 }

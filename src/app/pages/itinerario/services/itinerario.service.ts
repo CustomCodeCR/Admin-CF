@@ -34,7 +34,7 @@ export class ItinerarioService {
 
     return this._http.get<BaseResponse>(requestUrl).pipe(
       map((resp: BaseResponse) => {
-        console.log(resp.data)
+        console.log(resp.data);
         resp.data.forEach(function (prov: ItinerarioResponse) {
           switch (prov.estado) {
             case 0:
@@ -66,7 +66,8 @@ export class ItinerarioService {
 
   ItinerarioRegister(itinerario: ItinerarioRequest): Observable<BaseResponse> {
     const requestUrl = `${env.api}${endpoint.ITINERARIO_REGISTER}`;
-    return this._http.post(requestUrl, itinerario).pipe(
+    const formDataItinerario = this._builFormDataItinerario(itinerario);
+    return this._http.post(requestUrl, formDataItinerario).pipe(
       map((resp: BaseResponse) => {
         return resp;
       })
@@ -78,7 +79,8 @@ export class ItinerarioService {
     itinerario: ItinerarioRequest
   ): Observable<BaseResponse> {
     const requestUrl = `${env.api}${endpoint.ITINERARIO_EDIT}${id}`;
-    return this._http.put<BaseResponse>(requestUrl, itinerario);
+    const formDataItinerario = this._builFormDataItinerario(itinerario);
+    return this._http.put<BaseResponse>(requestUrl, formDataItinerario);
   }
 
   ItinerarioRemove(id: number): Observable<void> {
@@ -90,5 +92,24 @@ export class ItinerarioService {
         }
       })
     );
+  }
+
+  private _builFormDataItinerario(itinerario: ItinerarioRequest): FormData {
+    const formData = new FormData();
+    formData.append("pol", itinerario.pol),
+      formData.append("pod", itinerario.pod),
+      formData.append("closing", itinerario.closing.toString()),
+      formData.append("etd", itinerario.etd.toString()),
+      formData.append("eta", itinerario.eta.toString()),
+      formData.append("carrier", itinerario.carrier),
+      formData.append("vessel", itinerario.vessel),
+      formData.append("voyage", itinerario.voyage),
+      formData.append("origen", itinerario.origen),
+      formData.append("destino", itinerario.destino),
+      formData.append("transporte", itinerario.transporte),
+      formData.append("modalidad", itinerario.modalidad),
+      formData.append("estado", itinerario.estado.toString());
+
+    return formData;
   }
 }

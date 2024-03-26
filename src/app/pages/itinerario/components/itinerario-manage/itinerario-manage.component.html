@@ -8,20 +8,28 @@
         </button>
     </div>
     <mat-dialog-content>
+        <mat-label>Origen</mat-label>
+        <app-img-selector [urlCurrentImg]="this.form.get('origen').value"
+            (selectedImage)="selectedImageOrigen($event)"></app-img-selector>
+
         <mat-form-field appearance="outline" class="w-full">
             <mat-label>POL</mat-label>
-            <input matInput formControlName="pol" />
-            <mat-error *ngIf="form.get('pol').hasError('required')">
-                Campo POL es requerido.
-            </mat-error>
+            <mat-select formControlName="pol">
+                <mat-option *ngFor="let option of polOptions" [value]="option">{{ option }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('pol').hasError('required')">Campo POL es requerido.</mat-error>
         </mat-form-field>
+
+        <mat-label>Destino</mat-label>
+        <app-img-selector [urlCurrentImg]="this.form.get('destino').value"
+            (selectedImage)="selectedImageDestino($event)"></app-img-selector>
 
         <mat-form-field appearance="outline" class="w-full">
             <mat-label>POD</mat-label>
-            <input matInput formControlName="pod" />
-            <mat-error *ngIf="form.get('pod').hasError('required')">
-                Campo POD es requerido.
-            </mat-error>
+            <mat-select formControlName="pod">
+                <mat-option *ngFor="let option of podOptions" [value]="option">{{ option }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('pod').hasError('required')">Campo POD es requerido.</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-full">
@@ -69,6 +77,31 @@
             <input matInput formControlName="voyage" />
             <mat-error *ngIf="form.get('voyage').hasError('required')">
                 Campo Voyage es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Transporte</mat-label>
+            <mat-select formControlName="transporte">
+                <mat-option *ngFor="let option of transporteOptions" [value]="option">
+                    {{ option }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('transporte').hasError('required')">
+                Campo Transporte es requerido.
+            </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Modalidad</mat-label>
+            <mat-select formControlName="modalidad">
+                <mat-option *ngFor="let option of modalidadOptions" [value]="option">
+                    {{ option }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('modalidad').hasError('required')">
+                Campo Modalidad es requerido.
             </mat-error>
         </mat-form-field>
 

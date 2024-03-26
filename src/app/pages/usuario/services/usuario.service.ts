@@ -73,10 +73,7 @@ export class UsuarioService {
     );
   }
 
-  UsuarioEdit(
-    id: number,
-    usuario: UsuarioRequest
-  ): Observable<BaseResponse> {
+  UsuarioEdit(id: number, usuario: UsuarioRequest): Observable<BaseResponse> {
     const requestUrl = `${env.api}${endpoint.USUARIO_EDIT}${id}`;
     const formDataUsuario = this._builFormDataUsuario(usuario);
     return this._http.put<BaseResponse>(requestUrl, formDataUsuario);
@@ -104,6 +101,11 @@ export class UsuarioService {
       formData.append("idRol", usuario.idRol.toString()),
       formData.append("imagen", usuario.imagen),
       formData.append("estado", usuario.estado.toString());
+    formData.append("paginas", usuario.paginas);
+    formData.append("nombreEmpresa", usuario.nombreEmpresa);
+    formData.append("telefono", usuario.telefono);
+    formData.append("direccion", usuario.direccion);
+    formData.append("pais", usuario.pais);
 
     return formData;
   }

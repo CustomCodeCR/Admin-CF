@@ -1,4 +1,3 @@
-
 export interface ItinerarioResponse {
   id: number;
   pol: string;
@@ -9,6 +8,10 @@ export interface ItinerarioResponse {
   carrier: string;
   vessel: string;
   voyage: string;
+  origen: string;
+  destino: string;
+  transporte: string;
+  modalidad: string;
   fechaCreacionAuditoria: Date;
   estado: number;
   estadoItinerario: string;
@@ -27,5 +30,9 @@ export interface ItinerarioById {
   carrier: string;
   vessel: string;
   voyage: string;
+  origen: string;
+  destino: string;
+  transporte: string;
+  modalidad: string;
   estado: number;
 }

@@ -8,6 +8,11 @@ export interface UsuarioResponse {
   rol: string;
   idRol: number;
   imagen: string;
+  nombreEmpresa: string;
+  telefono: string;
+  direccion: string;
+  pais: string;
+  paginas: string;
   fechaCreacionAuditoria: Date;
   estado: number;
   estadoUsuario: string;
@@ -25,5 +30,10 @@ export interface UsuarioById {
   cliente: string;
   idRol: number;
   imagen: string;
+  nombreEmpresa: string;
+  telefono: string;
+  direccion: string;
+  pais: string;
+  paginas: string;
   estado: number;
 }
