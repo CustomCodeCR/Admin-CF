@@ -28,8 +28,15 @@ export class UsuarioManageComponent implements OnInit {
     { key: "11", name: "My Documentation" },
     { key: "12", name: "Exoneraciones" },
     { key: "13", name: "WHS" },
-    { key: "14", name: "My Finance" },
-    { key: "15", name: "Directorio Interno" },
+    { key: "14", name: "Miami, USA" },
+    { key: "15", name: "CFZ, Panama" },
+    { key: "16", name: "SJO, CRC" },
+    { key: "17", name: "Ningbo, China" },
+    { key: "18", name: "Shanghai, China" },
+    { key: "19", name: "Ciudad Guatemala, Guatemala" },
+    { key: "20", name: "San Pedro Sula, Honduras" },
+    { key: "21", name: "My Finance" },
+    { key: "22", name: "Directorio Interno" },
   ];
   isAdmin: boolean = false;
 
