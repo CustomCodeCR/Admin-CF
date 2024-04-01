@@ -100,6 +100,48 @@ export class AppComponent {
           },
         ],
       },
+      {
+        type: "dropdown",
+        label: "WHS",
+        icon: IconsService.prototype.getIcon("icWarehouse"),
+        children: [
+          {
+            type: "link",
+            label: "Miami, USA",
+            route: "whs/miami",
+          },
+          {
+            type: "link",
+            label: "CFZ, Panama",
+            route: "whs/panama",
+          },
+          {
+            type: "link",
+            label: "SJO, CRC",
+            route: "whs/sanjose",
+          },
+          {
+            type: "link",
+            label: "Ningbo, China",
+            route: "whs/ningbo",
+          },
+          {
+            type: "link",
+            label: "Shanghai, China",
+            route: "whs/shanghai",
+          },
+          {
+            type: "link",
+            label: "Ciudad Guatemala, Guatemala",
+            route: "whs/guatemala",
+          },
+          {
+            type: "link",
+            label: "San Pedro Sula, Honduras",
+            route: "whs/honduras",
+          },
+        ],
+      },
     ];
   }
 }

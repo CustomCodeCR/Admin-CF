@@ -19,9 +19,10 @@ export interface TableColumns<T> {
     | "number"
     | "quantityPurcharse"
     | "unitPurcharsePrice"
-    |  "quantitySale"
+    | "quantitySale"
     | "unitSalePrice"
-    | "totalAmount";
+    | "totalAmount"
+    | "hiperlink";
   visible: boolean;
   sort: boolean;
   sortProperty?: string;

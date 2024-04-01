@@ -32,6 +32,13 @@ export const endpoint = {
   NOTICIA_REGISTER: "Noticia/Register/",
   NOTICIA_EDIT: "Noticia/Edit/",
   NOTICIA_REMOVE: "Noticia/Remove/",
+
+  // WHS MODULE
+  LIST_WHS: "Whs",
+  WHS_BY_ID: "Whs/",
+  WHS_REGISTER: "Whs/Register/",
+  WHS_EDIT: "Whs/Edit/",
+  WHS_REMOVE: "Whs/Remove/",
 };
 
 export const httpOptions = {

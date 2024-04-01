@@ -1,0 +1,174 @@
+<form (ngSubmit)="clientSave()" [formGroup]="form">
+  <div mat-dialog-title class="flex justify-between">
+    <h2 class="headline m-0 text-xl text-accent">
+      <strong>Gestión de WHS</strong>
+    </h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button>
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>IDTRA</mat-label>
+      <input matInput formControlName="idtra" />
+      <mat-error *ngIf="form.get('idtra').hasError('required')">
+        Campo Idtra es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Cliente</mat-label>
+      <input matInput formControlName="cliente" />
+      <mat-error *ngIf="form.get('cliente').hasError('required')">
+        Campo Cliente es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Tipo de Registro</mat-label>
+      <mat-select formControlName="tipoRegistro">
+        <mat-option *ngFor="let option of tipoRegistro" [value]="option">{{
+          option
+        }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('tipoRegistro').hasError('required')"
+        >Campo Tipo Registro es requerido.</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>PO</mat-label>
+      <input matInput formControlName="po" />
+      <mat-error *ngIf="form.get('po').hasError('required')">
+        Campo PO es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="statusWhs">
+        <mat-option *ngFor="let option of status" [value]="option">{{
+          option
+        }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('statusWhs').hasError('required')"
+        >Campo Status es requerido.</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>POL</mat-label>
+      <mat-select formControlName="pol">
+        <mat-option *ngFor="let option of pol" [value]="option">{{
+          option
+        }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('pol').hasError('required')"
+        >Campo POL es requerido.</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>POD</mat-label>
+      <input matInput formControlName="pod" />
+      <mat-error *ngIf="form.get('pod').hasError('required')">
+        Campo POD es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Detalle</mat-label>
+      <input matInput formControlName="detalle" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Cant. Bultos</mat-label>
+      <input matInput formControlName="cantidadBultos" />
+      <mat-error *ngIf="form.get('cantidadBultos').hasError('required')">
+        Campo Cant. Bultos es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Tipo Bultos</mat-label>
+      <input matInput formControlName="tipoBultos" />
+      <mat-error *ngIf="form.get('tipoBultos').hasError('required')">
+        Campo Tipo Bultos es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Vinculacion Otro Registro</mat-label>
+      <input matInput formControlName="vinculacionOtroRegistro" />
+    </mat-form-field>
+
+    <mat-label>WHS Receipt</mat-label>
+    <app-pdf-selector
+      [urlCurrentFile]="this.form.get('whsReceipt').value"
+      (selectedFile)="selectedImageWhsReceipt($event)"
+    ></app-pdf-selector>
+
+    <mat-label>Documento Registro</mat-label>
+    <app-pdf-selector
+      [urlCurrentFile]="this.form.get('documentoregistro').value"
+      (selectedFile)="selectedImageDocumentoRegistro($event)"
+    ></app-pdf-selector>
+
+    <mat-label>Imagen 1</mat-label>
+    <app-img-selector
+      [urlCurrentImg]="this.form.get('imagen1').value"
+      (selectedImage)="selectedImage1($event)"
+    ></app-img-selector>
+
+    <mat-label>Imagen 2</mat-label>
+    <app-img-selector
+      [urlCurrentImg]="this.form.get('imagen2').value"
+      (selectedImage)="selectedImage2($event)"
+    ></app-img-selector>
+
+    <mat-label>Imagen 3</mat-label>
+    <app-img-selector
+      [urlCurrentImg]="this.form.get('imagen3').value"
+      (selectedImage)="selectedImage3($event)"
+    ></app-img-selector>
+
+    <mat-label>Imagen 4</mat-label>
+    <app-img-selector
+      [urlCurrentImg]="this.form.get('imagen4').value"
+      (selectedImage)="selectedImage4($event)"
+    ></app-img-selector>
+
+    <mat-label>Imagen 5</mat-label>
+    <app-img-selector
+      [urlCurrentImg]="this.form.get('imagen5').value"
+      (selectedImage)="selectedImage5($event)"
+    ></app-img-selector>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="estado">
+        <mat-option
+          *ngFor="let state of configs.statesSelect"
+          [value]="state.value"
+        >
+          {{ state.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('estado').hasError('required')">
+        Campo Estado es requerido.
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>CANCELAR</button>
+    <button
+      color="purple"
+      class="bg-accent text-accent-contrast"
+      mat-button
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      GUARDAR
+    </button>
+  </mat-dialog-actions>
+</form>

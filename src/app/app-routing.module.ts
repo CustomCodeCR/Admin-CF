@@ -32,6 +32,11 @@ const childrenRoutes: VexRoutes = [
       import("./pages/noticia/noticia.module").then((m) => m.NoticiaModule),
   },
   {
+    path: "whs/:parametro",
+    loadChildren: () =>
+      import("./pages/whs/whs.module").then((m) => m.WhsModule),
+  },
+  {
     path: "**",
     component: NotFoundComponent,
   },
