@@ -13,6 +13,7 @@ import { ImgSelectorComponent } from "@shared/components/reusables/img-selector/
 import { WhsManageComponent } from "./components/whs-manage/whs-manage.component";
 import { WhsListComponent } from "./components/whs-list/whs-list.component";
 import { PdfSelectorComponent } from "@shared/components/reusables/pdf-selector/pdf-selector.component";
+import { SelectAutocompleteComponent } from "@shared/components/reusables/select-autocomplete/select-autocomplete.component";
 
 @NgModule({
   declarations: [WhsManageComponent, WhsListComponent],
@@ -27,7 +28,8 @@ import { PdfSelectorComponent } from "@shared/components/reusables/pdf-selector/
     FilterDateRangeYmdComponent,
     ButtonResetFiltersComponent,
     ImgSelectorComponent,
-    PdfSelectorComponent
+    PdfSelectorComponent,
+    SelectAutocompleteComponent,
   ],
 })
 export class WhsModule {}

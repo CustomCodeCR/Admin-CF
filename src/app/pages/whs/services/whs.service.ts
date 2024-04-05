@@ -91,6 +91,7 @@ export class WhsService {
   private _builFormDataWhs(Whs: WhsRequest): FormData {
     const formData = new FormData();
     formData.append("idtra", Whs.idtra),
+      formData.append("numeroWHS", Whs.numeroWHS),
       formData.append("cliente", Whs.cliente),
       formData.append("tipoRegistro", Whs.tipoRegistro),
       formData.append("po", Whs.po),

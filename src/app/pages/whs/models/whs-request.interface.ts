@@ -1,5 +1,6 @@
 export interface WhsRequest {
   idtra: string;
+  numeroWHS: string;
   cliente: string;
   tipoRegistro: string;
   po: string;

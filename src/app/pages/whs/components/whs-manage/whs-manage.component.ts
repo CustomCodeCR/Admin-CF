@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AlertService } from "@shared/services/alert.service";
 import { WhsService } from "../../services/whs.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { UsuarioSelectService } from "@shared/services/usuario-select.service";
+import { SelectAutoComplete } from "@shared/models/select-autocomplete.interface";
 
 @Component({
   selector: "vex-whs-manage",
@@ -15,8 +17,21 @@ export class WhsManageComponent implements OnInit {
   icClose = IconsService.prototype.getIcon("icClose");
   configs = configs;
   pol = [];
-  status = ["En WHS", "Preparando para Envio", "En transito", "Salida"];
+  status = ["En WHS", "Preparando para Envio", "Salida"];
   tipoRegistro = ["Ingreso", "Salida"];
+  clientSelect: SelectAutoComplete[];
+  pod = [
+    "Miami, USA",
+    "Ciudad de Guatemala, Guatemala",
+    "San Pedro Sula, Honduras",
+    "Tegucigalpa, Honduras",
+    "Managua, Nicaragua",
+    "San Jose, Costa Rica",
+    "San Salvador, El Salvador",
+    "Colon Free Zone, Panama",
+    "Ciudad de Panama, Panama",
+    "Lima, Peru",
+  ];
 
   form: FormGroup;
 
@@ -24,6 +39,7 @@ export class WhsManageComponent implements OnInit {
     this.form = this._fb.group({
       id: [0, [Validators.required]],
       idtra: ["", [Validators.required]],
+      numeroWHS: ["", [Validators.required]],
       cliente: ["", [Validators.required]],
       tipoRegistro: ["", [Validators.required]],
       po: ["", [Validators.required]],
@@ -48,6 +64,7 @@ export class WhsManageComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
     private _fb: FormBuilder,
+    private _clientSelectService: UsuarioSelectService,
     private _alert: AlertService,
     private _WhsService: WhsService,
     public _dialogRef: MatDialogRef<WhsManageComponent>
@@ -56,6 +73,7 @@ export class WhsManageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.listSelectClients();
     if (this.data.data != null) {
       this.clientById(this.data.data.id);
     }
@@ -83,6 +101,12 @@ export class WhsManageComponent implements OnInit {
         this.pol = ["Shanghai, China"];
         break;
     }
+  }
+
+  listSelectClients(): void {
+    this._clientSelectService
+      .listSelectUsuarios()
+      .subscribe((resp) => (this.clientSelect = resp));
   }
 
   selectedImageWhsReceipt(file: File) {
@@ -118,6 +142,7 @@ export class WhsManageComponent implements OnInit {
       this.form.reset({
         id: resp.id,
         idtra: resp.idtra,
+        numeroWHS: resp.numeroWHS,
         cliente: resp.cliente,
         tipoRegistro: resp.tipoRegistro,
         po: resp.po,

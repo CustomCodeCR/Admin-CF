@@ -7,6 +7,7 @@ export const endpoint = {
 
   // USUARIO MODULE
   LIST_USUARIO: "Usuario",
+  LIST_SELECT_USUARIO: "Usuario/Select",
   USUARIO_BY_ID: "Usuario/",
   USUARIO_REGISTER: "Usuario/Register/",
   USUARIO_EDIT: "Usuario/Edit/",

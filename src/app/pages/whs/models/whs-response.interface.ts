@@ -1,7 +1,9 @@
 export interface WhsResponse {
   id: number;
   idtra: string;
+  numeroWHS: string;
   cliente: string;
+  nombreCliente: string;
   tipoRegistro: string;
   po: string;
   statusWhs: string;
@@ -29,6 +31,7 @@ export interface WhsResponse {
 export interface WhsById {
   id: number;
   idtra: string;
+  numeroWHS: string;
   cliente: string;
   tipoRegistro: string;
   po: string;
