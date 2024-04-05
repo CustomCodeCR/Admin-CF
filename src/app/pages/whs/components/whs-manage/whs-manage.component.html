@@ -17,17 +17,19 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Cliente</mat-label>
-      <app-select-autocomplete
-        label="Clientes"
-        [control]="form.get('cliente')"
-        [required]="true"
-        [listOptions]="clientSelect"
-      ></app-select-autocomplete>
-      <mat-error *ngIf="form.get('cliente').hasError('required')">
-        Campo Cliente es requerido.
+      <mat-label># WHS</mat-label>
+      <input matInput formControlName="numeroWHS" />
+      <mat-error *ngIf="form.get('numeroWHS').hasError('required')">
+        Campo # WHS es requerido.
       </mat-error>
     </mat-form-field>
+
+    <app-select-autocomplete
+      label="Clientes"
+      [control]="form.get('cliente')"
+      [required]="true"
+      [listOptions]="clientSelect"
+    ></app-select-autocomplete>
 
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Tipo de Registro</mat-label>

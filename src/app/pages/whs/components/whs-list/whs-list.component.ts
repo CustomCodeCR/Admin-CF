@@ -23,6 +23,7 @@ import { ActivatedRoute } from "@angular/router";
 export class WhsListComponent implements OnInit {
   component: any;
   parametro: any;
+  pol: string;
 
   constructor(
     customTitle: CustomTitleService,
@@ -40,30 +41,37 @@ export class WhsListComponent implements OnInit {
       switch (this.parametro) {
         case "guatemala":
           this.component.filters.whs = "Ciudad Guatemala, Guatemala";
+          this.pol = "Ciudad Guatemala, Guatemala";
           this.formatGetInputs();
           break;
         case "honduras":
           this.component.filters.whs = "San Pedro Sula, Honduras";
+          this.pol = "San Pedro Sula, Honduras";
           this.formatGetInputs();
           break;
         case "miami":
           this.component.filters.whs = "Miami, USA";
+          this.pol = "Miami, USA";
           this.formatGetInputs();
           break;
         case "panama":
           this.component.filters.whs = "CFZ, Panama";
+          this.pol = "CFZ, Panama";
           this.formatGetInputs();
           break;
         case "sanjose":
           this.component.filters.whs = "SJO, CRC";
+          this.pol = "SJO, CRC";
           this.formatGetInputs();
           break;
         case "ningbo":
           this.component.filters.whs = "Ningbo, China";
+          this.pol = "Ningbo, China";
           this.formatGetInputs();
           break;
         case "shanghai":
           this.component.filters.whs = "Shanghai, China";
+          this.pol = "Shanghai, China";
           this.formatGetInputs();
           break;
       }
@@ -203,6 +211,6 @@ export class WhsListComponent implements OnInit {
   }
 
   get getDownloadUrl() {
-    return `Whs?Download=True`;
+    return `Whs?whs=${this.pol}&Download=True`;
   }
 }

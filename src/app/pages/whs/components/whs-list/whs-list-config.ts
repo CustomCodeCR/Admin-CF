@@ -123,6 +123,18 @@ const tableColumns: TableColumns<WhsResponse>[] = [
     download: true,
   },
   {
+    label: "NOMBRE CLIENTE",
+    cssLabel: ["font-bold", "text-sm"],
+    property: "nombreCliente",
+    cssProperty: ["font-semibold", "text-sm", "text-left"],
+    type: "text",
+    sticky: false,
+    sort: true,
+    sortProperty: "nombreCliente",
+    visible: true,
+    download: true,
+  },
+  {
     label: "TIPO REGISTRO",
     cssLabel: ["font-bold", "text-sm"],
     property: "tipoRegistro",
