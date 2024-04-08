@@ -40,6 +40,20 @@ export const endpoint = {
   WHS_REGISTER: "Whs/Register/",
   WHS_EDIT: "Whs/Edit/",
   WHS_REMOVE: "Whs/Remove/",
+
+  // FINANCE MODULE
+  LIST_FINANCE: "Finance",
+  FINANCE_BY_ID: "Finance/",
+  FINANCE_REGISTER: "Finance/Register/",
+  FINANCE_EDIT: "Finance/Edit/",
+  FINANCE_REMOVE: "Finance/Remove/",
+
+  // EXONERACION MODULE
+  LIST_EXONERACION: "Exoneracion",
+  EXONERACION_BY_ID: "Exoneracion/",
+  EXONERACION_REGISTER: "Exoneracion/Register/",
+  EXONERACION_EDIT: "Exoneracion/Edit/",
+  EXONERACION_REMOVE: "Exoneracion/Remove/",
 };
 
 export const httpOptions = {

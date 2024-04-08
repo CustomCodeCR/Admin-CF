@@ -142,6 +142,18 @@ export class AppComponent {
           },
         ],
       },
+      {
+        type: "link",
+        label: "Finance",
+        route: "finance",
+        icon: IconsService.prototype.getIcon("icCalendar"),
+      },
+      {
+        type: "link",
+        label: "Exoneraciones",
+        route: "exoneraciones",
+        icon: IconsService.prototype.getIcon("icCalendar"),
+      },
     ];
   }
 }
