@@ -146,7 +146,7 @@ export class WhsManageComponent implements OnInit {
         cliente: resp.cliente,
         tipoRegistro: resp.tipoRegistro,
         po: resp.po,
-        statusWhs: resp.statusWhs,
+        statusWhs: resp.statusWHS,
         pol: resp.pol,
         pod: resp.pod,
         detalle: resp.detalle,

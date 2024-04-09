@@ -1,1 +1,151 @@
-<p>exoneracion-manage works!</p>
+<form (ngSubmit)="clientSave()" [formGroup]="form">
+  <div mat-dialog-title class="flex justify-between">
+    <h2 class="headline m-0 text-xl text-accent">
+      <strong>Gestión de Exoneracion</strong>
+    </h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button>
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>IDTRA</mat-label>
+      <input matInput formControlName="idtra" />
+      <mat-error *ngIf="form.get('idtra').hasError('required')">
+        Campo Idtra es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <app-select-autocomplete
+      label="Clientes"
+      [control]="form.get('cliente')"
+      [required]="true"
+      [listOptions]="clientSelect"
+    ></app-select-autocomplete>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Tipo de Exoneracion</mat-label>
+      <mat-select formControlName="tipoExoneracion">
+        <mat-option *ngFor="let option of tipoExoneracion" [value]="option">{{
+          option
+        }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('tipoExoneracion').hasError('required')"
+        >Campo Tipo Exoneracion es requerido.</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="statusExoneracion">
+        <mat-option *ngFor="let option of status" [value]="option">{{
+          option
+        }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('statusExoneracion').hasError('required')"
+        >Campo Status es requerido.</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Producto</mat-label>
+      <input matInput formControlName="producto" />
+      <mat-error *ngIf="form.get('producto').hasError('required')">
+        Campo Producto es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Categoria</mat-label>
+      <input matInput formControlName="categoria" />
+      <mat-error *ngIf="form.get('categoria').hasError('required')"
+        >Campo Categoria es requerido.</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Clasificacion Arancelaria</mat-label>
+      <input matInput formControlName="clasificacionArancelaria" />
+      <mat-error
+        *ngIf="form.get('clasificacionArancelaria').hasError('required')"
+        >Campo Clasificacion Arancelaria es requerido.</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label># Solicitud</mat-label>
+      <input matInput formControlName="numeroSolicitud" />
+      <mat-error *ngIf="form.get('numeroSolicitud').hasError('required')">
+        Campo # Solicitud es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-label>Solicitud</mat-label>
+    <app-pdf-selector
+      [urlCurrentFile]="this.form.get('solicitud').value"
+      (selectedFile)="selectedImageWhsReceipt($event)"
+    ></app-pdf-selector>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label># Autorizacion</mat-label>
+      <input matInput formControlName="numeroAutorizacion" />
+      <mat-error *ngIf="form.get('numeroAutorizacion').hasError('required')">
+        Campo # Autorizacion es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-label>Autorizacion</mat-label>
+    <app-pdf-selector
+      [urlCurrentFile]="this.form.get('autorizacion').value"
+      (selectedFile)="selectedImageDocumentoRegistro($event)"
+    ></app-pdf-selector>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Desde</mat-label>
+      <input matInput type="date" formControlName="desde" />
+      <mat-error *ngIf="form.get('desde').hasError('required')">
+        Campo Desde es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Hasta</mat-label>
+      <input matInput type="date" formControlName="hasta" />
+      <mat-error *ngIf="form.get('hasta').hasError('required')">
+        Campo Hasta es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Descripcion</mat-label>
+      <input matInput formControlName="descripcion" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="estado">
+        <mat-option
+          *ngFor="let state of configs.statesSelect"
+          [value]="state.value"
+        >
+          {{ state.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('estado').hasError('required')">
+        Campo Estado es requerido.
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>CANCELAR</button>
+    <button
+      color="purple"
+      class="bg-accent text-accent-contrast"
+      mat-button
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      GUARDAR
+    </button>
+  </mat-dialog-actions>
+</form>

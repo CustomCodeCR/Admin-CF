@@ -95,7 +95,7 @@ export class WhsService {
       formData.append("cliente", Whs.cliente),
       formData.append("tipoRegistro", Whs.tipoRegistro),
       formData.append("po", Whs.po),
-      formData.append("statusWhs", Whs.statusWhs),
+      formData.append("statusWHS", Whs.statusWHS),
       formData.append("pol", Whs.pol),
       formData.append("pod", Whs.pod),
       formData.append("detalle", Whs.detalle),

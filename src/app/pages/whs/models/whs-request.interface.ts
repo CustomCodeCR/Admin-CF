@@ -4,7 +4,7 @@ export interface WhsRequest {
   cliente: string;
   tipoRegistro: string;
   po: string;
-  statusWhs: string;
+  statusWHS: string;
   pol: string;
   pod: string;
   detalle: string;

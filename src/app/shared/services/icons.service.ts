@@ -27,6 +27,8 @@ import icAdd from "@iconify/icons-ic/twotone-add-shopping-cart";
 import icMin from "@iconify/icons-ic/twotone-remove";
 import icAddDetail from "@iconify/icons-ic/twotone-add";
 import icCalendar from "@iconify/icons-ic/twotone-calendar-month";
+import icFinance from "@iconify/icons-ic/twotone-payment";
+import icExoneracion from "@iconify/icons-ic/round-list-alt"
 
 @Injectable({
   providedIn: "root",
@@ -136,6 +138,14 @@ export class IconsService {
 
     if (icon == "icCalendar") {
       return icCalendar
+    }
+
+    if (icon == "icFinance") {
+      return icFinance
+    }
+
+    if (icon == "icExoneracion") {
+      return icExoneracion
     }
   }
 }

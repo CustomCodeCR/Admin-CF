@@ -48,8 +48,7 @@ export class LoginComponent implements OnInit {
       if (resp.isSuccess) {
         var dataUser = JSON.parse(atob(resp.data.split(".")[1]));
         var username = dataUser.given_name;
-        console.log(username)
-        if(username === "1"){
+        if(username === "1" || username === "3"){
           this.router.navigate(["/"]);
         }
       }

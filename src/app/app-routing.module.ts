@@ -37,6 +37,16 @@ const childrenRoutes: VexRoutes = [
       import("./pages/whs/whs.module").then((m) => m.WhsModule),
   },
   {
+    path: "finance",
+    loadChildren: () =>
+      import("./pages/finance/finance.module").then((m) => m.FinanceModule),
+  },
+  {
+    path: "exoneraciones",
+    loadChildren: () =>
+      import("./pages/exoneracion/exoneracion.module").then((m) => m.ExoneracionModule),
+  },
+  {
     path: "**",
     component: NotFoundComponent,
   },
@@ -53,7 +63,7 @@ const routes: VexRoutes = [
     loadChildren: () =>
       import("./pages/auth/auth.module").then((m) => m.AuthModule),
     data: {
-      containerEnabled: true,
+      containerEnabled: true
     },
   },
   {

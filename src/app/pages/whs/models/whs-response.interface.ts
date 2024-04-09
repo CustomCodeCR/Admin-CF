@@ -6,7 +6,7 @@ export interface WhsResponse {
   nombreCliente: string;
   tipoRegistro: string;
   po: string;
-  statusWhs: string;
+  statusWHS: string;
   pol: string;
   pod: string;
   detalle: string;
@@ -35,7 +35,7 @@ export interface WhsById {
   cliente: string;
   tipoRegistro: string;
   po: string;
-  statusWhs: string;
+  statusWHS: string;
   pol: string;
   pod: string;
   detalle: string;

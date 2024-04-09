@@ -146,13 +146,13 @@ export class AppComponent {
         type: "link",
         label: "Finance",
         route: "finance",
-        icon: IconsService.prototype.getIcon("icCalendar"),
+        icon: IconsService.prototype.getIcon("icFinance"),
       },
       {
         type: "link",
         label: "Exoneraciones",
         route: "exoneraciones",
-        icon: IconsService.prototype.getIcon("icCalendar"),
+        icon: IconsService.prototype.getIcon("icExoneracion"),
       },
     ];
   }
