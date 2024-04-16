@@ -14,31 +14,46 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 export class UsuarioManageComponent implements OnInit {
   icClose = IconsService.prototype.getIcon("icClose");
   configs = configs;
-  rolList = [
-    { key: "1", name: "Perfil" },
-    { key: "2", name: "Tramites" },
-    { key: "3", name: "Transporte Internacional" },
-    { key: "4", name: "Agenciamiento Aduanal" },
-    { key: "5", name: "Shedules" },
-    { key: "6", name: "Itinerarios" },
-    { key: "7", name: "Tracking" },
-    { key: "8", name: "Quote" },
-    { key: "9", name: "Cotización" },
-    { key: "10", name: "Tarifarios" },
-    { key: "11", name: "My Documentation" },
-    { key: "12", name: "Exoneraciones" },
-    { key: "13", name: "WHS" },
-    { key: "14", name: "Miami, USA" },
-    { key: "15", name: "CFZ, Panama" },
-    { key: "16", name: "SJO, CRC" },
-    { key: "17", name: "Ningbo, China" },
-    { key: "18", name: "Shanghai, China" },
-    { key: "19", name: "Ciudad Guatemala, Guatemala" },
-    { key: "20", name: "San Pedro Sula, Honduras" },
-    { key: "21", name: "My Finance" },
-    { key: "22", name: "Directorio Interno" },
-  ];
+  rolLists = {
+    1: [
+    ],
+    2: [
+      { key: "1", name: "Perfil" },
+      { key: "2", name: "Tramites" },
+      { key: "3", name: "Transporte Internacional" },
+      { key: "4", name: "Agenciamiento Aduanal" },
+      { key: "5", name: "Shedules" },
+      { key: "6", name: "Itinerarios" },
+      { key: "7", name: "Tracking" },
+      { key: "8", name: "Quote" },
+      { key: "9", name: "Cotización" },
+      { key: "10", name: "Tarifarios" },
+      { key: "11", name: "My Documentation" },
+      { key: "12", name: "Exoneraciones" },
+      { key: "13", name: "WHS" },
+      { key: "14", name: "Miami, USA" },
+      { key: "15", name: "CFZ, Panama" },
+      { key: "16", name: "SJO, CRC" },
+      { key: "17", name: "Ningbo, China" },
+      { key: "18", name: "Shanghai, China" },
+      { key: "19", name: "Ciudad Guatemala, Guatemala" },
+      { key: "20", name: "San Pedro Sula, Honduras" },
+      { key: "21", name: "My Finance" },
+      { key: "22", name: "Directorio Interno" },
+    ],
+    3: [
+      { key: "1", name: "Usuarios" },
+      { key: "2", name: "Itinerarios" },
+      { key: "3", name: "Empleos" },
+      { key: "4", name: "Noticias" },
+      { key: "5", name: "WHS" },
+      { key: "6", name: "Finance" },
+      { key: "7", name: "Exoneraciones" },
+    ],
+  };
   isAdmin: boolean = false;
+  rolList: { key: string; name: string }[];
+  selectedRoleId: number;
 
   form: FormGroup;
 
@@ -56,7 +71,7 @@ export class UsuarioManageComponent implements OnInit {
       telefono: ["", [Validators.required]],
       direccion: ["", [Validators.required]],
       pais: ["", [Validators.required]],
-      paginas: ["1"],
+      paginas: ["1,2,3,4,5,6,7"],
       imagen: [""],
       estado: ["", [Validators.required]],
     });
@@ -76,13 +91,18 @@ export class UsuarioManageComponent implements OnInit {
     if (this.data != null) {
       this.clientById(this.data.data.id);
     }
-    const rol = this.form.get("idRol").value;
-    this.isAdmin = rol !== 1;
+    this.selectedRoleId = this.form.get("idRol").value;
+    this.updateRolList(this.selectedRoleId);
   }
 
   onRoleChange(event: any): void {
-    const selectedRoleId = event.value;
-    this.isAdmin = selectedRoleId !== 1;
+    this.selectedRoleId = event.value;
+    this.isAdmin = this.selectedRoleId !== 1;
+    this.updateRolList(this.selectedRoleId);
+  }
+
+  private updateRolList(selectedRoleId: number): void {
+    this.rolList = this.rolLists[selectedRoleId];
   }
 
   selectedImage(file: File) {

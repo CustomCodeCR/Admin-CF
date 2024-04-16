@@ -23,6 +23,15 @@ export class AuthService {
     );
   }
 
+  getUserPermissions(): number[] {
+    const user = JSON.parse(localStorage.getItem("users"));
+    if (user) {
+      const typ = user.typ;
+      return typ ? typ.split(",").map(Number) : [];
+    }
+    return [];
+  }
+
   login(req: Login, authType: string): Observable<BaseResponse> {
     localStorage.setItem("authType", "Interno");
     const requestUrl = `${env.api}${endpoint.LOGIN}?authType=${authType}`;
@@ -31,6 +40,10 @@ export class AuthService {
         if (resp.isSuccess) {
           localStorage.setItem("token", JSON.stringify(resp.data));
           this.user.next(resp.data);
+          const [encodedHeader, encodedPayload] = resp.data.split(".").slice(0, 2);
+          const decodedPayload = atob(encodedPayload);
+          const user = JSON.parse(decodedPayload);
+          localStorage.setItem("users", JSON.stringify(user));
         }
 
         return resp;
@@ -51,6 +64,10 @@ export class AuthService {
           if (resp.isSuccess) {
             localStorage.setItem("token", JSON.stringify(resp.data));
             this.user.next(resp.data);
+            const [encodedHeader, encodedPayload] = resp.data.split(".").slice(0, 2);
+            const decodedPayload = atob(encodedPayload);
+            const user = JSON.parse(decodedPayload);
+            localStorage.setItem("users", JSON.stringify(user));
           }
 
           return resp;
@@ -60,6 +77,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("users");
     localStorage.removeItem("authType");
     this.user.next(null);
     window.location.reload();

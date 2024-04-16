@@ -7,44 +7,55 @@ import { AuthGuard } from "@shared/guards/auth.guard";
 
 const childrenRoutes: VexRoutes = [
   {
+    path: "usuarios",
+    loadChildren: () =>
+      import("./pages/usuario/usuario.module").then((m) => m.UsuarioModule),
+    canActivate: [AuthGuard],
+    data: { key: "1" },
+  },
+  {
     path: "itinerarios",
     loadChildren: () =>
       import("./pages/itinerario/itinerario.module").then(
         (m) => m.ItinerarioModule
       ),
-    data: {
-      containerEnabled: true,
-    },
-  },
-  {
-    path: "usuarios",
-    loadChildren: () =>
-      import("./pages/usuario/usuario.module").then((m) => m.UsuarioModule),
+      canActivate: [AuthGuard],
+      data: { key: "2" },
   },
   {
     path: "empleos",
     loadChildren: () =>
       import("./pages/empleo/empleo.module").then((m) => m.EmpleoModule),
+    canActivate: [AuthGuard],
+    data: { key: "3" },
   },
   {
     path: "noticias",
     loadChildren: () =>
       import("./pages/noticia/noticia.module").then((m) => m.NoticiaModule),
+    canActivate: [AuthGuard],
+    data: { key: "4" },
   },
   {
     path: "whs/:parametro",
     loadChildren: () =>
       import("./pages/whs/whs.module").then((m) => m.WhsModule),
+    canActivate: [AuthGuard],
+    data: { key: "5" },
   },
   {
     path: "finance",
     loadChildren: () =>
       import("./pages/finance/finance.module").then((m) => m.FinanceModule),
+    canActivate: [AuthGuard],
+    data: { key: "6" },
   },
   {
     path: "exoneraciones",
     loadChildren: () =>
       import("./pages/exoneracion/exoneracion.module").then((m) => m.ExoneracionModule),
+    canActivate: [AuthGuard],
+    data: { key: "7" },
   },
   {
     path: "**",
