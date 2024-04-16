@@ -14,6 +14,14 @@ const searchOptions: SearchOptions[] = [
     validation_desc: "Sólo se permite correos válidos.",
     icon: "icMail",
   },
+  {
+    label: "Cliente",
+    value: 2,
+    placeholder: "Buscar por Cliente",
+    validation: [GenericValidators.defaultName],
+    validation_desc: "Sólo se permite nombres válidos.",
+    icon: "icMail",
+  },
 ];
 
 const menuItems: MenuItems[] = [
