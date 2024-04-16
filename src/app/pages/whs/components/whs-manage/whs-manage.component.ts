@@ -16,7 +16,15 @@ import { SelectAutoComplete } from "@shared/models/select-autocomplete.interface
 export class WhsManageComponent implements OnInit {
   icClose = IconsService.prototype.getIcon("icClose");
   configs = configs;
-  pol = [];
+  pol = [
+    "Ciudad Guatemala, Guatemala",
+    "San Pedro Sula, Honduras",
+    "Miami, USA",
+    "CFZ, Panama",
+    "SJO, CRC",
+    "Ningbo, China",
+    "Shanghai, China",
+  ];
   status = ["En WHS", "Preparando para Envio", "Salida"];
   tipoRegistro = ["Ingreso", "Salida"];
   clientSelect: SelectAutoComplete[];
@@ -43,16 +51,16 @@ export class WhsManageComponent implements OnInit {
       cliente: ["", [Validators.required]],
       tipoRegistro: ["", [Validators.required]],
       po: ["", [Validators.required]],
-      statusWhs: ["", [Validators.required]],
+      statusWHS: ["", [Validators.required]],
       pol: ["", [Validators.required]],
       pod: ["", [Validators.required]],
       detalle: [""],
       cantidadBultos: ["", [Validators.required]],
       tipoBultos: ["", [Validators.required]],
       vinculacionOtroRegistro: [""],
-      whsReceipt: ["", [Validators.required]],
-      documentoregistro: ["", [Validators.required]],
-      imagen1: ["", [Validators.required]],
+      whsReceipt: [""],
+      documentoregistro: [""],
+      imagen1: [""],
       imagen2: [""],
       imagen3: [""],
       imagen4: [""],
@@ -146,7 +154,7 @@ export class WhsManageComponent implements OnInit {
         cliente: resp.cliente,
         tipoRegistro: resp.tipoRegistro,
         po: resp.po,
-        statusWhs: resp.statusWHS,
+        statusWHS: resp.statusWHS,
         pol: resp.pol,
         pod: resp.pod,
         detalle: resp.detalle,

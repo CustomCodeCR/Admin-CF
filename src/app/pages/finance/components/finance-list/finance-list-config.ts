@@ -7,9 +7,9 @@ import { FinanceResponse } from "../../models/finance-response.interface";
 
 const searchOptions: SearchOptions[] = [
   {
-    label: "",
+    label: "Cliente",
     value: 1,
-    placeholder: "",
+    placeholder: "Buscar por Cliente",
     validation: [GenericValidators.defaultName],
     validation_desc: "Sólo se permite nombres válidos.",
     icon: "icMail",

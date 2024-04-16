@@ -32,12 +32,12 @@ export class ExoneracionManageComponent implements OnInit {
       producto: ["", [Validators.required]],
       categoria: ["", [Validators.required]],
       clasificacionArancelaria: ["", [Validators.required]],
-      numeroSolicitud: ["", [Validators.required]],
-      solicitud: ["", [Validators.required]],
+      numeroSolicitud: [""],
+      solicitud: [""],
       numeroAutorizacion: [""],
-      autorizacion: ["", [Validators.required]],
-      desde: [new Date(), [Validators.required]],
-      hasta: [new Date(), [Validators.required]],
+      autorizacion: [""],
+      desde: [new Date()],
+      hasta: [new Date()],
       descripcion: ["", [Validators.required]],
       estado: ["", [Validators.required]],
     });
@@ -118,22 +118,26 @@ export class ExoneracionManageComponent implements OnInit {
   }
 
   clientRegister(): void {
-    this._ExoneracionService.ExoneracionRegister(this.form.value).subscribe((resp) => {
-      if (resp.isSuccess) {
-        this._alert.success("Excelente", resp.message);
-        this._dialogRef.close(true);
-      } else {
-        this._alert.warn("Atención", resp.message);
-      }
-    });
+    this._ExoneracionService
+      .ExoneracionRegister(this.form.value)
+      .subscribe((resp) => {
+        if (resp.isSuccess) {
+          this._alert.success("Excelente", resp.message);
+          this._dialogRef.close(true);
+        } else {
+          this._alert.warn("Atención", resp.message);
+        }
+      });
   }
 
   clientEdit(id: number): void {
-    this._ExoneracionService.ExoneracionEdit(id, this.form.value).subscribe((resp) => {
-      if (resp.isSuccess) {
-        this._alert.success("Excelente", resp.message);
-        this._dialogRef.close(true);
-      }
-    });
+    this._ExoneracionService
+      .ExoneracionEdit(id, this.form.value)
+      .subscribe((resp) => {
+        if (resp.isSuccess) {
+          this._alert.success("Excelente", resp.message);
+          this._dialogRef.close(true);
+        }
+      });
   }
 }
