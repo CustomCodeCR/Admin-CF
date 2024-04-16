@@ -15,8 +15,7 @@ export class UsuarioManageComponent implements OnInit {
   icClose = IconsService.prototype.getIcon("icClose");
   configs = configs;
   rolLists = {
-    1: [
-    ],
+    1: [],
     2: [
       { key: "1", name: "Perfil" },
       { key: "2", name: "Tramites" },
@@ -57,6 +56,34 @@ export class UsuarioManageComponent implements OnInit {
 
   form: FormGroup;
 
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data,
+    private _fb: FormBuilder,
+    private _alert: AlertService,
+    private _usuarioService: UsuarioService,
+    public _dialogRef: MatDialogRef<UsuarioManageComponent>
+  ) {
+    this.initForm();
+  }
+
+  ngOnInit(): void {
+    this.selectedRoleId = this.form.get("idRol").value;
+    if (this.data != null) {
+      this.clientById(this.data.data.id);
+    }
+    this.updateRolList(this.selectedRoleId);
+  }
+
+  onRoleChange(event: any): void {
+    this.selectedRoleId = event.value;
+    this.isAdmin = this.selectedRoleId !== 1;
+    this.updateRolList(this.selectedRoleId);
+  }
+
+  private updateRolList(selectedRoleId: number): void {
+    this.rolList = this.rolLists[selectedRoleId];
+  }
+
   initForm(): void {
     this.form = this._fb.group({
       id: [0, [Validators.required]],
@@ -75,34 +102,6 @@ export class UsuarioManageComponent implements OnInit {
       imagen: [""],
       estado: ["", [Validators.required]],
     });
-  }
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data,
-    private _fb: FormBuilder,
-    private _alert: AlertService,
-    private _usuarioService: UsuarioService,
-    public _dialogRef: MatDialogRef<UsuarioManageComponent>
-  ) {
-    this.initForm();
-  }
-
-  ngOnInit(): void {
-    if (this.data != null) {
-      this.clientById(this.data.data.id);
-    }
-    this.selectedRoleId = this.form.get("idRol").value;
-    this.updateRolList(this.selectedRoleId);
-  }
-
-  onRoleChange(event: any): void {
-    this.selectedRoleId = event.value;
-    this.isAdmin = this.selectedRoleId !== 1;
-    this.updateRolList(this.selectedRoleId);
-  }
-
-  private updateRolList(selectedRoleId: number): void {
-    this.rolList = this.rolLists[selectedRoleId];
   }
 
   selectedImage(file: File) {
@@ -139,12 +138,15 @@ export class UsuarioManageComponent implements OnInit {
         .join(",");
     }
 
-    console.log(selectedPrivilegios);
     privilegiosControl.setValue(selectedPrivilegios);
   }
 
   clientById(id: number): void {
     this._usuarioService.UsuarioById(id).subscribe((resp) => {
+      const selectedPages: string[] = resp.paginas.split(",");
+      
+      this.updateRolList(resp.idRol);
+
       this.form.reset({
         id: resp.id,
         nombre: resp.nombre,
@@ -156,7 +158,7 @@ export class UsuarioManageComponent implements OnInit {
         telefono: resp.telefono,
         direccion: resp.direccion,
         pais: resp.pais,
-        paginas: resp.paginas.split(","),
+        paginas: selectedPages,
         imagen: resp.imagen,
         estado: resp.estado,
       });
@@ -177,7 +179,6 @@ export class UsuarioManageComponent implements OnInit {
       this.clientEdit(id);
     } else {
       this.clientRegister();
-      console.log(this.form.value);
     }
   }
 
