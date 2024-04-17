@@ -36,8 +36,8 @@ export class ExoneracionManageComponent implements OnInit {
       solicitud: [""],
       numeroAutorizacion: [""],
       autorizacion: [""],
-      desde: [new Date()],
-      hasta: [new Date()],
+      desde: [this.getFormattedDate()],
+      hasta: [this.getFormattedDate()],
       descripcion: ["", [Validators.required]],
       estado: ["", [Validators.required]],
     });
@@ -93,8 +93,8 @@ export class ExoneracionManageComponent implements OnInit {
         solicitud: resp.solicitud,
         numeroAutorizacion: resp.numeroAutorizacion,
         autorizacion: resp.autorizacion,
-        desde: desde,
-        hasta: hasta,
+        desde: desde.toISOString().slice(0, 10),
+        hasta: hasta.toISOString().slice(0, 10),
         descripcion: resp.descripcion,
         estado: resp.estado,
       });
@@ -139,5 +139,14 @@ export class ExoneracionManageComponent implements OnInit {
           this._dialogRef.close(true);
         }
       });
+  }
+
+  getFormattedDate(): string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0"); // +1 porque enero es 0
+    const day = String(now.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
   }
 }

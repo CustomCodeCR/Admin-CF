@@ -32,7 +32,6 @@ export class ExoneracionService {
 
     return this._http.get<BaseResponse>(requestUrl).pipe(
       map((resp: BaseResponse) => {
-        console.log(resp.data);
         resp.data.forEach(function (prov: ExoneracionResponse) {
           switch (prov.estado) {
             case 0:

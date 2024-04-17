@@ -51,9 +51,9 @@ export class ItinerarioManageComponent implements OnInit {
       id: [0, [Validators.required]],
       pol: ["", [Validators.required]],
       pod: ["", [Validators.required]],
-      closing: [new Date(), [Validators.required]],
-      etd: [new Date(), [Validators.required]],
-      eta: [new Date(), [Validators.required]],
+      closing: [this.getFormattedDate(), [Validators.required]],
+      etd: [this.getFormattedDate(), [Validators.required]],
+      eta: [this.getFormattedDate(), [Validators.required]],
       carrier: ["", [Validators.required]],
       vessel: ["", [Validators.required]],
       voyage: ["", [Validators.required]],
@@ -99,9 +99,9 @@ export class ItinerarioManageComponent implements OnInit {
         id: resp.id,
         pol: resp.pol,
         pod: resp.pod,
-        closing: closing,
-        etd: etd,
-        eta: eta,
+        closing: closing.toISOString().slice(0, 10),
+        etd: etd.toISOString().slice(0, 10),
+        eta: eta.toISOString().slice(0, 10),
         carrier: resp.carrier,
         vessel: resp.vessel,
         voyage: resp.voyage,
@@ -152,5 +152,14 @@ export class ItinerarioManageComponent implements OnInit {
           this._dialogRef.close(true);
         }
       });
+  }
+
+  getFormattedDate(): string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0"); // +1 porque enero es 0
+    const day = String(now.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
   }
 }

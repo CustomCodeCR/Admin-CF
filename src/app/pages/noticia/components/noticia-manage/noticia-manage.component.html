@@ -25,13 +25,11 @@
         </mat-form-field>
 
         <div fxLayout="row" fxLayoutGap="16px">
-            <mat-form-field appearance="outline" fxFlex="w-full">
-                <mat-label>Contenido</mat-label>
-                <textarea matInput formControlName="contenido"></textarea>
+            <mat-label>Contenido</mat-label>
+                <angular-editor formControlName="contenido" [config]="config"></angular-editor>
                 <mat-error *ngIf="form.get('contenido').hasError('required')">
                     Campo Contenido es requerido.
                 </mat-error>
-            </mat-form-field>
         </div>
 
         <mat-form-field appearance="outline" class="w-full">

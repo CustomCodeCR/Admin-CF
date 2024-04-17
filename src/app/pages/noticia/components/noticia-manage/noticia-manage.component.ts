@@ -1,21 +1,49 @@
-import { Component, Inject, OnInit } from "@angular/core";
-import { IconsService } from "@shared/services/icons.service";
-import * as configs from "../../../../../static-data/configs";
+import { AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { AngularEditorConfig } from '@kolkov/angular-editor'; // Importar AngularEditorConfig
 import { AlertService } from "@shared/services/alert.service";
 import { NoticiaService } from "../../services/noticia.service";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import * as configs from "../../../../../static-data/configs";
+import { IconsService } from '@shared/services/icons.service';
 
 @Component({
   selector: "vex-noticia-manage",
   templateUrl: "./noticia-manage.component.html",
   styleUrls: ["./noticia-manage.component.scss"],
 })
-export class NoticiaManageComponent implements OnInit {
+export class NoticiaManageComponent implements OnInit, OnDestroy {
   icClose = IconsService.prototype.getIcon("icClose");
   configs = configs;
-
   form: FormGroup;
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data,
+    private _fb: FormBuilder,
+    private _alert: AlertService,
+    private _noticiaService: NoticiaService,
+    public _dialogRef: MatDialogRef<NoticiaManageComponent>
+  ) {}
+
+  config: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '15rem',
+    minHeight: '5rem',
+    placeholder: 'Enter text here...',
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',  
+  };
+
+  ngOnInit(): void {
+    this.initForm();
+    if (this.data != null) {
+      this.clientById(this.data.data.id);
+    }
+  }
+
+  ngOnDestroy() {}
 
   initForm(): void {
     this.form = this._fb.group({
@@ -26,22 +54,6 @@ export class NoticiaManageComponent implements OnInit {
       imagen: [""],
       estado: ["", [Validators.required]],
     });
-  }
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data,
-    private _fb: FormBuilder,
-    private _alert: AlertService,
-    private _noticiaService: NoticiaService,
-    public _dialogRef: MatDialogRef<NoticiaManageComponent>
-  ) {
-    this.initForm();
-  }
-
-  ngOnInit(): void {
-    if (this.data != null) {
-      this.clientById(this.data.data.id);
-    }
   }
 
   selectedImage(file: File) {

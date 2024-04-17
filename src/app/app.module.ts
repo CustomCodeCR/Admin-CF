@@ -15,6 +15,8 @@ import { CustomLayoutModule } from "./custom-layout/custom-layout.module";
 import { NotFoundComponent } from "./pages/not-found/not-found.component";
 import { DatePipe } from "@angular/common";
 import { MAT_DATE_LOCALE } from "@angular/material/core";
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [AppComponent, NotFoundComponent, CustomLayoutAuthComponent],
@@ -29,6 +31,8 @@ import { MAT_DATE_LOCALE } from "@angular/material/core";
     MatFormFieldModule,
     VexModule,
     CustomLayoutModule,
+    AngularEditorModule,
+    FormsModule,
   ],
   providers: [
     DatePipe,

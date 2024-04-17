@@ -11,7 +11,7 @@ import { ContainerModule } from "src/@vex/directives/container/container.module"
 import { ListTableSimpleModule } from "./components/list-table-simple/list-table-simple.module";
 import { SearchFilterModule } from "./components/search-filter/search-filter.module";
 import { MaterialModule } from "./import-modules/material.module";
-import { PdfSelectorComponent } from "./components/reusables/pdf-selector/pdf-selector.component";
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [],
@@ -29,6 +29,7 @@ import { PdfSelectorComponent } from "./components/reusables/pdf-selector/pdf-se
     ListTableSimpleModule,
     SearchFilterModule,
     NgxSpinnerModule,
+    AngularEditorModule
   ],
 })
 export class SharedModule {}
