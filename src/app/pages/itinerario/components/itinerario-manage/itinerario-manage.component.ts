@@ -40,6 +40,12 @@ export class ItinerarioManageComponent implements OnInit {
     "San Pedro Sula, Honduras",
     "San Salvador, El Salvador",
     "Managua, Nicaragua",
+    "Newark (New Jersey), USA",
+    "Los Angeles (California), USA",
+    "Port Everglades (Florida), USA",
+    "Savannah (Georgia), USA",
+    "Wilmington (North Carolina), USA",
+    "Houston (Texas), USA"
   ];
   icClose = IconsService.prototype.getIcon("icClose");
   configs = configs;
