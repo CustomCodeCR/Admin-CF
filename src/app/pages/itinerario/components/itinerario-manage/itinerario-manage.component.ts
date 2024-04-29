@@ -32,6 +32,8 @@ export class ItinerarioManageComponent implements OnInit {
     "Managua, Nicaragua",
     "San Pedro Sula, Honduras",
     "San Salvador, El Salvador",
+    "Puerto Moin, CRC",
+    "Puerto Caldera, CRC"
   ];
   podOptions = [
     "CFZ, Panama",
