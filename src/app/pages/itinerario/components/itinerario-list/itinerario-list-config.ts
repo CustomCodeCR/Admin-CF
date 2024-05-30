@@ -22,6 +22,22 @@ const searchOptions: SearchOptions[] = [
     validation_desc: "Sólo se permite nombres válidos.",
     icon: "icMail",
   },
+  {
+    label: "Modalidad",
+    value: 2,
+    placeholder: "Buscar por Modalidad",
+    validation: [GenericValidators.defaultName],
+    validation_desc: "Sólo se permite nombres válidos.",
+    icon: "icMail",
+  },
+  {
+    label: "Transporte",
+    value: 2,
+    placeholder: "Buscar por Transporte",
+    validation: [GenericValidators.defaultName],
+    validation_desc: "Sólo se permite nombres válidos.",
+    icon: "icMail",
+  },
 ];
 
 const menuItems: MenuItems[] = [
