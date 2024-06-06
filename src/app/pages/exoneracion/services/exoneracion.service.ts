@@ -17,6 +17,22 @@ export class ExoneracionService {
 
   constructor(private _http: HttpClient, private _alert: AlertService) {}
 
+  private logAction(
+    action: string,
+    id: number | null = null,
+    params: any = null
+  ): Observable<BaseResponse> {
+    const requestUrl = `${env.api}${endpoint.LOGS_REGISTER}`;
+    const logData = {
+      Usuario: `${localStorage.getItem('username')}`, 
+      Modulo: "Exoneracion",
+      TipoMetodo: action,
+      Parametros: JSON.stringify({ id, ...params }),
+      Estado: 1,
+    };
+    return this._http.post<BaseResponse>(requestUrl, logData);
+  }
+
   GetAll(
     size: string,
     sort: string,
@@ -66,6 +82,9 @@ export class ExoneracionService {
     const formDataExoneracion = this._builFormDataExoneracion(Exoneracion);
     return this._http.post(requestUrl, formDataExoneracion).pipe(
       map((resp: BaseResponse) => {
+        if (resp.isSuccess) {
+          this.logAction("Registro", null, Exoneracion);
+        }
         return resp;
       })
     );
@@ -74,7 +93,14 @@ export class ExoneracionService {
   ExoneracionEdit(id: number, Exoneracion: ExoneracionRequest): Observable<BaseResponse> {
     const requestUrl = `${env.api}${endpoint.EXONERACION_EDIT}${id}`;
     const formDataExoneracion = this._builFormDataExoneracion(Exoneracion);
-    return this._http.put<BaseResponse>(requestUrl, formDataExoneracion);
+    return this._http.put<BaseResponse>(requestUrl, formDataExoneracion).pipe(
+      map((resp: BaseResponse) => {
+        if (resp.isSuccess) {
+          this.logAction("Edición", id, Exoneracion);
+        }
+        return resp;
+      })
+    );
   }
 
   ExoneracionRemove(id: number): Observable<void> {
@@ -82,6 +108,7 @@ export class ExoneracionService {
     return this._http.put(requestUrl, "").pipe(
       map((resp: BaseResponse) => {
         if (resp.isSuccess) {
+          this.logAction("Eliminación", id);
           this._alert.success("Excelente", resp.message);
         }
       })

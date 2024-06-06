@@ -54,6 +54,10 @@ export const endpoint = {
   EXONERACION_REGISTER: "Exoneracion/Register/",
   EXONERACION_EDIT: "Exoneracion/Edit/",
   EXONERACION_REMOVE: "Exoneracion/Remove/",
+
+  //LOGS MODULE
+  LIST_LOGS: "Logs",
+  LOGS_REGISTER: "Logs/Register/",
 };
 
 export const httpOptions = {

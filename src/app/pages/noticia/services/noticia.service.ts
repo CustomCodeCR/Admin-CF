@@ -19,6 +19,22 @@ import {
 export class NoticiaService {
   constructor(private _http: HttpClient, private _alert: AlertService) {}
 
+  private logAction(
+    action: string,
+    id: number | null = null,
+    params: any = null
+  ): Observable<BaseResponse> {
+    const requestUrl = `${env.api}${endpoint.LOGS_REGISTER}`;
+    const logData = {
+      Usuario: `${localStorage.getItem('username')}`, 
+      Modulo: "Noticia",
+      TipoMetodo: action,
+      Parametros: JSON.stringify({ id, ...params }),
+      Estado: 1,
+    };
+    return this._http.post<BaseResponse>(requestUrl, logData);
+  }
+
   GetAll(
     size: string,
     sort: string,
@@ -68,6 +84,9 @@ export class NoticiaService {
     const formDataNoticia = this._builFormDataNoticia(noticia);
     return this._http.post(requestUrl, formDataNoticia).pipe(
       map((resp: BaseResponse) => {
+        if (resp.isSuccess) {
+          this.logAction("Registro", null, noticia);
+        }
         return resp;
       })
     );
@@ -76,7 +95,14 @@ export class NoticiaService {
   noticiaEdit(id: number, noticia: NoticiaRequest): Observable<BaseResponse> {
     const requestUrl = `${env.api}${endpoint.NOTICIA_EDIT}${id}`;
     const formDataNoticia = this._builFormDataNoticia(noticia);
-    return this._http.put<BaseResponse>(requestUrl, formDataNoticia);
+    return this._http.put<BaseResponse>(requestUrl, formDataNoticia).pipe(
+      map((resp: BaseResponse) => {
+        if (resp.isSuccess) {
+          this.logAction("Edición", id, noticia);
+        }
+        return resp;
+      })
+    );;
   }
 
   noticiaRemove(id: number): Observable<void> {
@@ -84,6 +110,7 @@ export class NoticiaService {
     return this._http.put(requestUrl, "").pipe(
       map((resp: BaseResponse) => {
         if (resp.isSuccess) {
+          this.logAction("Eliminación", id);
           this._alert.success("Excelente", resp.message);
         }
       })

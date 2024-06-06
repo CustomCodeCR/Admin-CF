@@ -154,6 +154,12 @@ export class AppComponent {
         route: "exoneraciones",
         icon: IconsService.prototype.getIcon("icExoneracion"),
       },
+      {
+        type: "link",
+        label: "Logs",
+        route: "logs",
+        icon: IconsService.prototype.getIcon("icExoneracion"),
+      },
     ];
   }
 }

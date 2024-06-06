@@ -17,6 +17,22 @@ export class FinanceService {
 
   constructor(private _http: HttpClient, private _alert: AlertService) { }
 
+  private logAction(
+    action: string,
+    id: number | null = null,
+    params: any = null
+  ): Observable<BaseResponse> {
+    const requestUrl = `${env.api}${endpoint.LOGS_REGISTER}`;
+    const logData = {
+      Usuario: `${localStorage.getItem('username')}`, 
+      Modulo: "My Finance",
+      TipoMetodo: action,
+      Parametros: JSON.stringify({ id, ...params }),
+      Estado: 1,
+    };
+    return this._http.post<BaseResponse>(requestUrl, logData);
+  }
+
   GetAll(
     size: string,
     sort: string,
@@ -67,6 +83,9 @@ export class FinanceService {
     const formDataFinance = this._builFormDataFinance(Finance);
     return this._http.post(requestUrl, formDataFinance).pipe(
       map((resp: BaseResponse) => {
+        if (resp.isSuccess) {
+          this.logAction("Registro", null, Finance);
+        }
         return resp;
       })
     );
@@ -75,7 +94,14 @@ export class FinanceService {
   FinanceEdit(id: number, Finance: FinanceRequest): Observable<BaseResponse> {
     const requestUrl = `${env.api}${endpoint.FINANCE_EDIT}${id}`;
     const formDataFinance = this._builFormDataFinance(Finance);
-    return this._http.put<BaseResponse>(requestUrl, formDataFinance);
+    return this._http.put<BaseResponse>(requestUrl, formDataFinance).pipe(
+      map((resp: BaseResponse) => {
+        if (resp.isSuccess) {
+          this.logAction("Edición", id, Finance);
+        }
+        return resp;
+      })
+    );;
   }
 
   FinanceRemove(id: number): Observable<void> {
@@ -83,6 +109,7 @@ export class FinanceService {
     return this._http.put(requestUrl, "").pipe(
       map((resp: BaseResponse) => {
         if (resp.isSuccess) {
+          this.logAction("Eliminación", id);
           this._alert.success("Excelente", resp.message);
         }
       })

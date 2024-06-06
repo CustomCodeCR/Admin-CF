@@ -16,6 +16,22 @@ import { WhsById, WhsResponse } from "../models/whs-response.interface";
 export class WhsService {
   constructor(private _http: HttpClient, private _alert: AlertService) {}
 
+  private logAction(
+    action: string,
+    id: number | null = null,
+    params: any = null
+  ): Observable<BaseResponse> {
+    const requestUrl = `${env.api}${endpoint.LOGS_REGISTER}`;
+    const logData = {
+      Usuario: `${localStorage.getItem('username')}`, 
+      Modulo: "WHS",
+      TipoMetodo: action,
+      Parametros: JSON.stringify({ id, ...params }),
+      Estado: 1,
+    };
+    return this._http.post<BaseResponse>(requestUrl, logData);
+  }
+
   GetAll(
     size: string,
     sort: string,
@@ -66,6 +82,9 @@ export class WhsService {
     const formDataWhs = this._builFormDataWhs(Whs);
     return this._http.post(requestUrl, formDataWhs).pipe(
       map((resp: BaseResponse) => {
+        if (resp.isSuccess) {
+          this.logAction("Registro", null, Whs);
+        }
         return resp;
       })
     );
@@ -74,7 +93,14 @@ export class WhsService {
   WhsEdit(id: number, Whs: WhsRequest): Observable<BaseResponse> {
     const requestUrl = `${env.api}${endpoint.WHS_EDIT}${id}`;
     const formDataWhs = this._builFormDataWhs(Whs);
-    return this._http.put<BaseResponse>(requestUrl, formDataWhs);
+    return this._http.put<BaseResponse>(requestUrl, formDataWhs).pipe(
+      map((resp: BaseResponse) => {
+        if (resp.isSuccess) {
+          this.logAction("Edición", id, Whs);
+        }
+        return resp;
+      })
+    );;
   }
 
   WhsRemove(id: number): Observable<void> {
@@ -82,6 +108,7 @@ export class WhsService {
     return this._http.put(requestUrl, "").pipe(
       map((resp: BaseResponse) => {
         if (resp.isSuccess) {
+          this.logAction("Eliminación", id);
           this._alert.success("Excelente", resp.message);
         }
       })

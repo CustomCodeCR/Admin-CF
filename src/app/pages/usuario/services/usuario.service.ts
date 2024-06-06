@@ -19,6 +19,22 @@ import {
 export class UsuarioService {
   constructor(private _http: HttpClient, private _alert: AlertService) {}
 
+  private logAction(
+    action: string,
+    id: number | null = null,
+    params: any = null
+  ): Observable<BaseResponse> {
+    const requestUrl = `${env.api}${endpoint.LOGS_REGISTER}`;
+    const logData = {
+      Usuario: `${localStorage.getItem('username')}`, 
+      Modulo: "Usuario",
+      TipoMetodo: action,
+      Parametros: JSON.stringify({ id, ...params }),
+      Estado: 1,
+    };
+    return this._http.post<BaseResponse>(requestUrl, logData);
+  }
+
   GetAll(
     size: string,
     sort: string,
@@ -68,6 +84,9 @@ export class UsuarioService {
     const formDataUsuario = this._builFormDataUsuario(usuario);
     return this._http.post(requestUrl, formDataUsuario).pipe(
       map((resp: BaseResponse) => {
+        if (resp.isSuccess) {
+          this.logAction("Registro", null, usuario);
+        }
         return resp;
       })
     );
@@ -76,7 +95,14 @@ export class UsuarioService {
   UsuarioEdit(id: number, usuario: UsuarioRequest): Observable<BaseResponse> {
     const requestUrl = `${env.api}${endpoint.USUARIO_EDIT}${id}`;
     const formDataUsuario = this._builFormDataUsuario(usuario);
-    return this._http.put<BaseResponse>(requestUrl, formDataUsuario);
+    return this._http.put<BaseResponse>(requestUrl, formDataUsuario).pipe(
+      map((resp: BaseResponse) => {
+        if (resp.isSuccess) {
+          this.logAction("Edición", id, usuario);
+        }
+        return resp;
+      })
+    );;
   }
 
   UsuarioRemove(id: number): Observable<void> {
@@ -84,6 +110,7 @@ export class UsuarioService {
     return this._http.put(requestUrl, "").pipe(
       map((resp: BaseResponse) => {
         if (resp.isSuccess) {
+          this.logAction("Eliminación", id);
           this._alert.success("Excelente", resp.message);
         }
       })

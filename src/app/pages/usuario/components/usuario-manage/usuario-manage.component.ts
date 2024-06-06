@@ -48,6 +48,7 @@ export class UsuarioManageComponent implements OnInit {
       { key: "5", name: "WHS" },
       { key: "6", name: "Finance" },
       { key: "7", name: "Exoneraciones" },
+      { key: "8", name: "Logs" },
     ],
   };
   isAdmin: boolean = false;
@@ -98,7 +99,7 @@ export class UsuarioManageComponent implements OnInit {
       telefono: ["", [Validators.required]],
       direccion: ["", [Validators.required]],
       pais: ["", [Validators.required]],
-      paginas: ["1,2,3,4,5,6,7"],
+      paginas: ["1,2,3,4,5,6,7,8"],
       imagen: [""],
       estado: ["", [Validators.required]],
     });

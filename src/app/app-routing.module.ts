@@ -58,6 +58,13 @@ const childrenRoutes: VexRoutes = [
     data: { key: "7" },
   },
   {
+    path: "logs",
+    loadChildren: () =>
+      import("./pages/log/log.module").then((m) => m.LogModule),
+    canActivate: [AuthGuard],
+    data: { key: "8" },
+  },
+  {
     path: "**",
     component: NotFoundComponent,
   },

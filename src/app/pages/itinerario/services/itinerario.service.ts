@@ -19,6 +19,22 @@ import {
 export class ItinerarioService {
   constructor(private _http: HttpClient, private _alert: AlertService) {}
 
+  private logAction(
+    action: string,
+    id: number | null = null,
+    params: any = null
+  ): Observable<BaseResponse> {
+    const requestUrl = `${env.api}${endpoint.LOGS_REGISTER}`;
+    const logData = {
+      Usuario: `${localStorage.getItem('username')}`, 
+      Modulo: "Itinerario",
+      TipoMetodo: action,
+      Parametros: JSON.stringify({ id, ...params }),
+      Estado: 1,
+    };
+    return this._http.post<BaseResponse>(requestUrl, logData);
+  }
+
   GetAll(
     size: string,
     sort: string,
@@ -68,6 +84,9 @@ export class ItinerarioService {
     const formDataItinerario = this._builFormDataItinerario(itinerario);
     return this._http.post(requestUrl, formDataItinerario).pipe(
       map((resp: BaseResponse) => {
+        if (resp.isSuccess) {
+          this.logAction("Registro", null, itinerario);
+        }
         return resp;
       })
     );
@@ -79,7 +98,14 @@ export class ItinerarioService {
   ): Observable<BaseResponse> {
     const requestUrl = `${env.api}${endpoint.ITINERARIO_EDIT}${id}`;
     const formDataItinerario = this._builFormDataItinerario(itinerario);
-    return this._http.put<BaseResponse>(requestUrl, formDataItinerario);
+    return this._http.put<BaseResponse>(requestUrl, formDataItinerario).pipe(
+      map((resp: BaseResponse) => {
+        if (resp.isSuccess) {
+          this.logAction("Edición", id, itinerario);
+        }
+        return resp;
+      })
+    );;
   }
 
   ItinerarioRemove(id: number): Observable<void> {
@@ -87,6 +113,7 @@ export class ItinerarioService {
     return this._http.put(requestUrl, "").pipe(
       map((resp: BaseResponse) => {
         if (resp.isSuccess) {
+          this.logAction("Eliminación", id);
           this._alert.success("Excelente", resp.message);
         }
       })
