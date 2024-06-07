@@ -5,6 +5,9 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AlertService } from "@shared/services/alert.service";
 import { EmpleoService } from "../../services/empleo.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { LogsService } from "@shared/services/logs.service";
+import { LogsRequest } from "@shared/models/logs-request.interface";
+
 
 @Component({
   selector: "vex-empleo-manage",
@@ -14,6 +17,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 export class EmpleoManageComponent implements OnInit {
   icClose = IconsService.prototype.getIcon("icClose");
   configs = configs;
+  user = JSON.parse(localStorage.getItem('users'));
 
   form: FormGroup;
 
@@ -33,6 +37,7 @@ export class EmpleoManageComponent implements OnInit {
     private _fb: FormBuilder,
     private _alert: AlertService,
     private _empleoService: EmpleoService,
+    private _logsService: LogsService,
     public _dialogRef: MatDialogRef<EmpleoManageComponent>
   ) {
     this.initForm();
@@ -69,30 +74,49 @@ export class EmpleoManageComponent implements OnInit {
     }
 
     const id = this.form.get("id").value;
+    const empleoData = this.form.value;
 
     if (id > 0) {
-      this.clientEdit(id);
+      this.clientEdit(id, empleoData);
     } else {
-      this.clientRegister();
+      this.clientRegister(empleoData);
     }
   }
 
-  clientRegister(): void {
-    this._empleoService.EmpleoRegister(this.form.value).subscribe((resp) => {
+  clientRegister(empleoData): void {
+    this._empleoService.EmpleoRegister(empleoData).subscribe((resp) => {
       if (resp.isSuccess) {
         this._alert.success("Excelente", resp.message);
         this._dialogRef.close(true);
+
+        const log: LogsRequest = {
+          usuario: `${this.user.family_name}`,
+          modulo: "Empleo",
+          tipoMetodo: "Registro",
+          parametros: JSON.stringify(empleoData),
+          estado: 1
+        };
+        this._logsService.LogRegister(log).subscribe();
       } else {
         this._alert.warn("Atención", resp.message);
       }
     });
   }
 
-  clientEdit(id: number): void {
-    this._empleoService.EmpleoEdit(id, this.form.value).subscribe((resp) => {
+  clientEdit(id: number, empleoData): void {
+    this._empleoService.EmpleoEdit(id, empleoData).subscribe((resp) => {
       if (resp.isSuccess) {
         this._alert.success("Excelente", resp.message);
         this._dialogRef.close(true);
+
+        const log: LogsRequest = {
+          usuario: `${this.user.family_name}`,
+          modulo: "Empleo",
+          tipoMetodo: "Edición",
+          parametros: JSON.stringify(empleoData),
+          estado: 1
+        };
+        this._logsService.LogRegister(log).subscribe();
       }
     });
   }

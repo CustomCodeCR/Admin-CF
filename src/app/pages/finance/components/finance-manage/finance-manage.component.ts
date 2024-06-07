@@ -7,6 +7,8 @@ import { FinanceService } from "../../services/finance.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { UsuarioSelectService } from "@shared/services/usuario-select.service";
 import { SelectAutoComplete } from "@shared/models/select-autocomplete.interface";
+import { LogsService } from "@shared/services/logs.service";
+import { LogsRequest } from "@shared/models/logs-request.interface";
 
 @Component({
   selector: "vex-finance-manage",
@@ -17,6 +19,7 @@ export class FinanceManageComponent implements OnInit {
   icClose = IconsService.prototype.getIcon("icClose");
   configs = configs;
   clientSelect: SelectAutoComplete[];
+  user = JSON.parse(localStorage.getItem('users'));
 
   form: FormGroup;
 
@@ -34,6 +37,7 @@ export class FinanceManageComponent implements OnInit {
     private _fb: FormBuilder,
     private _clientSelectService: UsuarioSelectService,
     private _alert: AlertService,
+    private _logsService: LogsService,
     private _FinanceService: FinanceService,
     public _dialogRef: MatDialogRef<FinanceManageComponent>
   ) {
@@ -76,30 +80,49 @@ export class FinanceManageComponent implements OnInit {
     }
 
     const id = this.form.get("id").value;
+    const data = this.form.value;
 
     if (id > 0) {
-      this.clientEdit(id);
+      this.clientEdit(id, data);
     } else {
-      this.clientRegister();
+      this.clientRegister(data);
     }
   }
 
-  clientRegister(): void {
-    this._FinanceService.FinanceRegister(this.form.value).subscribe((resp) => {
+  clientRegister(data): void {
+    this._FinanceService.FinanceRegister(data).subscribe((resp) => {
       if (resp.isSuccess) {
         this._alert.success("Excelente", resp.message);
         this._dialogRef.close(true);
+
+        const log: LogsRequest = {
+          usuario: `${this.user.family_name}`,
+          modulo: "Finance",
+          tipoMetodo: "Registro",
+          parametros: JSON.stringify(data),
+          estado: 1
+        };
+        this._logsService.LogRegister(log).subscribe();
       } else {
         this._alert.warn("Atención", resp.message);
       }
     });
   }
 
-  clientEdit(id: number): void {
-    this._FinanceService.FinanceEdit(id, this.form.value).subscribe((resp) => {
+  clientEdit(id: number, data): void {
+    this._FinanceService.FinanceEdit(id, data).subscribe((resp) => {
       if (resp.isSuccess) {
         this._alert.success("Excelente", resp.message);
         this._dialogRef.close(true);
+
+        const log: LogsRequest = {
+          usuario: `${this.user.family_name}`,
+          modulo: "Finance",
+          tipoMetodo: "Edición",
+          parametros: JSON.stringify(data),
+          estado: 1
+        };
+        this._logsService.LogRegister(log).subscribe();
       }
     });
   }

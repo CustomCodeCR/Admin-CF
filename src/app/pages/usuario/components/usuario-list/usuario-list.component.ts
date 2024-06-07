@@ -11,6 +11,8 @@ import { UsuarioManageComponent } from "../usuario-manage/usuario-manage.compone
 import { UsuarioResponse } from "../../models/usuario-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
+import { LogsRequest } from "@shared/models/logs-request.interface";
+import { LogsService } from "@shared/services/logs.service";
 
 @Component({
   selector: "vex-usuario-list",
@@ -20,10 +22,12 @@ import Swal from "sweetalert2";
 })
 export class UsuarioListComponent implements OnInit {
   component: any;
+  user = JSON.parse(localStorage.getItem('users'));
 
   constructor(
     customTitle: CustomTitleService,
     public _usuarioService: UsuarioService,
+    private _logsService: LogsService,
     public _dialog: MatDialog
   ) {
     customTitle.set("Usuarios");
@@ -145,9 +149,33 @@ export class UsuarioListComponent implements OnInit {
       width: 430,
     }).then((result) => {
       if (result.isConfirmed) {
-        this._usuarioService
-          .UsuarioRemove(usuarioData.id)
-          .subscribe(() => this.setGetInputsUsuario(true));
+        this._usuarioService.UsuarioRemove(usuarioData.id).subscribe(
+          () => {
+            this.setGetInputsUsuario(true);
+
+            // Registrar en los logs
+            const log: LogsRequest = {
+              usuario: `${this.user.family_name}`,
+              modulo: "Usuario",
+              tipoMetodo: "Eliminación",
+              parametros: JSON.stringify(usuarioData),
+              estado: 1,
+            };
+            this._logsService.LogRegister(log).subscribe();
+          },
+          (error) => {
+            console.error("Error eliminando usuario:", error);
+
+            const log: LogsRequest = {
+              usuario: `${this.user.family_name}`,
+              modulo: "Usuario",
+              tipoMetodo: "Eliminación",
+              parametros: JSON.stringify(usuarioData),
+              estado: 0,
+            };
+            this._logsService.LogRegister(log).subscribe();
+          }
+        );
       }
     });
   }

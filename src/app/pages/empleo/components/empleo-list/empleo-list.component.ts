@@ -11,6 +11,8 @@ import { EmpleoManageComponent } from "../empleo-manage/empleo-manage.component"
 import { EmpleoResponse } from "../../models/empleo-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
+import { LogsRequest } from "@shared/models/logs-request.interface";
+import { LogsService } from "@shared/services/logs.service";
 
 @Component({
   selector: "vex-empleo-list",
@@ -20,9 +22,11 @@ import Swal from "sweetalert2";
 })
 export class EmpleoListComponent implements OnInit {
   component: any;
+  user = JSON.parse(localStorage.getItem('users'));
 
   constructor(
     customTitle: CustomTitleService,
+    private _logsService: LogsService,
     public _empleoService: EmpleoService,
     public _dialog: MatDialog
   ) {
@@ -145,9 +149,32 @@ export class EmpleoListComponent implements OnInit {
       width: 430,
     }).then((result) => {
       if (result.isConfirmed) {
-        this._empleoService
-          .empleoRemove(empleoData.id)
-          .subscribe(() => this.setGetInputsempleo(true));
+        this._empleoService.empleoRemove(empleoData.id).subscribe(
+          () => {
+            this.setGetInputsempleo(true);
+
+            const log: LogsRequest = {
+              usuario: `${this.user.family_name}`,
+              modulo: "Empleo",
+              tipoMetodo: "Eliminación",
+              parametros: JSON.stringify(empleoData),
+              estado: 1
+            };
+            this._logsService.LogRegister(log).subscribe();
+          },
+          (error) => {
+            console.error("Error eliminando empleo:", error);
+
+            const log: LogsRequest = {
+              usuario: `${localStorage.getItem('family_name')}`,
+              modulo: "Empleo",
+              tipoMetodo: "Eliminación",
+              parametros: JSON.stringify(empleoData),
+              estado: 0
+            };
+            this._logsService.LogRegister(log).subscribe();
+          }
+        );
       }
     });
   }

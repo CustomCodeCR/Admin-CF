@@ -7,6 +7,8 @@ import { WhsService } from "../../services/whs.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { UsuarioSelectService } from "@shared/services/usuario-select.service";
 import { SelectAutoComplete } from "@shared/models/select-autocomplete.interface";
+import { LogsService } from "@shared/services/logs.service";
+import { LogsRequest } from "@shared/models/logs-request.interface";
 
 @Component({
   selector: "vex-whs-manage",
@@ -42,6 +44,7 @@ export class WhsManageComponent implements OnInit {
   ];
 
   form: FormGroup;
+  user = JSON.parse(localStorage.getItem('users'));
 
   initForm(): void {
     this.form = this._fb.group({
@@ -75,6 +78,7 @@ export class WhsManageComponent implements OnInit {
     private _clientSelectService: UsuarioSelectService,
     private _alert: AlertService,
     private _WhsService: WhsService,
+    private _logsService: LogsService,
     public _dialogRef: MatDialogRef<WhsManageComponent>
   ) {
     this.initForm();
@@ -181,30 +185,49 @@ export class WhsManageComponent implements OnInit {
     }
 
     const id = this.form.get("id").value;
+    const data = this.form.value;
 
     if (id > 0) {
-      this.clientEdit(id);
+      this.clientEdit(id, data);
     } else {
-      this.clientRegister();
+      this.clientRegister(data);
     }
   }
 
-  clientRegister(): void {
-    this._WhsService.WhsRegister(this.form.value).subscribe((resp) => {
+  clientRegister(data): void {
+    this._WhsService.WhsRegister(data).subscribe((resp) => {
       if (resp.isSuccess) {
         this._alert.success("Excelente", resp.message);
         this._dialogRef.close(true);
+
+        const log: LogsRequest = {
+          usuario: `${this.user.family_name}`,
+          modulo: "WHS",
+          tipoMetodo: "Registro",
+          parametros: JSON.stringify(data),
+          estado: 1
+        };
+        this._logsService.LogRegister(log).subscribe();
       } else {
         this._alert.warn("Atención", resp.message);
       }
     });
   }
 
-  clientEdit(id: number): void {
-    this._WhsService.WhsEdit(id, this.form.value).subscribe((resp) => {
+  clientEdit(id: number, data): void {
+    this._WhsService.WhsEdit(id, data).subscribe((resp) => {
       if (resp.isSuccess) {
         this._alert.success("Excelente", resp.message);
         this._dialogRef.close(true);
+
+        const log: LogsRequest = {
+          usuario: `${this.user.family_name}`,
+          modulo: "WHS",
+          tipoMetodo: "Edición",
+          parametros: JSON.stringify(data),
+          estado: 1
+        };
+        this._logsService.LogRegister(log).subscribe();
       }
     });
   }

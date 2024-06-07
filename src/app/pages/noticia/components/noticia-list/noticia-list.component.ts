@@ -11,6 +11,8 @@ import { NoticiaManageComponent } from "../noticia-manage/noticia-manage.compone
 import { NoticiaResponse } from "../../models/noticia-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
+import { LogsService } from "@shared/services/logs.service";
+import { LogsRequest } from "@shared/models/logs-request.interface";
 
 @Component({
   selector: "vex-noticia-list",
@@ -20,10 +22,12 @@ import Swal from "sweetalert2";
 })
 export class NoticiaListComponent implements OnInit {
   component: any;
+  user = JSON.parse(localStorage.getItem('users'));
 
   constructor(
     customTitle: CustomTitleService,
     public _noticiaService: NoticiaService,
+    private _logsService: LogsService,
     public _dialog: MatDialog
   ) {
     customTitle.set("Noticias");
@@ -133,7 +137,7 @@ export class NoticiaListComponent implements OnInit {
 
   noticiaRemove(noticiaData: NoticiaResponse) {
     Swal.fire({
-      title: `¿Realmente deseas eliminar el noticia ${noticiaData.titulo}?`,
+      title: `¿Realmente deseas eliminar la noticia ${noticiaData.titulo}?`,
       text: "Se borrará de forma permanente!",
       icon: "warning",
       showCancelButton: true,
@@ -145,9 +149,32 @@ export class NoticiaListComponent implements OnInit {
       width: 430,
     }).then((result) => {
       if (result.isConfirmed) {
-        this._noticiaService
-          .noticiaRemove(noticiaData.id)
-          .subscribe(() => this.setGetInputsnoticia(true));
+        this._noticiaService.noticiaRemove(noticiaData.id).subscribe(
+          () => {
+            this.setGetInputsnoticia(true);
+
+            const log: LogsRequest = {
+              usuario: `${this.user.family_name}`,
+              modulo: "Noticia",
+              tipoMetodo: "Eliminación",
+              parametros: JSON.stringify(noticiaData),
+              estado: 1,
+            };
+            this._logsService.LogRegister(log).subscribe();
+          },
+          (error) => {
+            console.error("Error eliminando noticia:", error);
+
+            const log: LogsRequest = {
+              usuario: `${this.user.family_name}`,
+              modulo: "Noticia",
+              tipoMetodo: "Eliminación",
+              parametros: JSON.stringify(noticiaData),
+              estado: 0,
+            };
+            this._logsService.LogRegister(log).subscribe();
+          }
+        );
       }
     });
   }

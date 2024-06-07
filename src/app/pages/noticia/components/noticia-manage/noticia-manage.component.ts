@@ -6,6 +6,8 @@ import { AlertService } from "@shared/services/alert.service";
 import { NoticiaService } from "../../services/noticia.service";
 import * as configs from "../../../../../static-data/configs";
 import { IconsService } from '@shared/services/icons.service';
+import { LogsService } from '@shared/services/logs.service';
+import { LogsRequest } from '@shared/models/logs-request.interface';
 
 @Component({
   selector: "vex-noticia-manage",
@@ -16,11 +18,13 @@ export class NoticiaManageComponent implements OnInit, OnDestroy {
   icClose = IconsService.prototype.getIcon("icClose");
   configs = configs;
   form: FormGroup;
+  user = JSON.parse(localStorage.getItem('users'));
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
     private _fb: FormBuilder,
     private _alert: AlertService,
+    private _logsService: LogsService,
     private _noticiaService: NoticiaService,
     public _dialogRef: MatDialogRef<NoticiaManageComponent>
   ) {}
@@ -81,30 +85,49 @@ export class NoticiaManageComponent implements OnInit, OnDestroy {
     }
 
     const id = this.form.get("id").value;
+    const data = this.form.value;
 
     if (id > 0) {
-      this.clientEdit(id);
+      this.clientEdit(id, data);
     } else {
-      this.clientRegister();
+      this.clientRegister(data);
     }
   }
 
-  clientRegister(): void {
-    this._noticiaService.noticiaRegister(this.form.value).subscribe((resp) => {
+  clientRegister(data): void {
+    this._noticiaService.noticiaRegister(data).subscribe((resp) => {
       if (resp.isSuccess) {
         this._alert.success("Excelente", resp.message);
         this._dialogRef.close(true);
+
+        const log: LogsRequest = {
+          usuario: `${this.user.family_name}`,
+          modulo: "Noticia",
+          tipoMetodo: "Registro",
+          parametros: JSON.stringify(data),
+          estado: 1
+        };
+        this._logsService.LogRegister(log).subscribe();
       } else {
         this._alert.warn("Atención", resp.message);
       }
     });
   }
 
-  clientEdit(id: number): void {
-    this._noticiaService.noticiaEdit(id, this.form.value).subscribe((resp) => {
+  clientEdit(id: number, data): void {
+    this._noticiaService.noticiaEdit(id, data).subscribe((resp) => {
       if (resp.isSuccess) {
         this._alert.success("Excelente", resp.message);
         this._dialogRef.close(true);
+
+        const log: LogsRequest = {
+          usuario: `${this.user.family_name}`,
+          modulo: "Noticia",
+          tipoMetodo: "Edición",
+          parametros: JSON.stringify(data),
+          estado: 1
+        };
+        this._logsService.LogRegister(log).subscribe();
       }
     });
   }

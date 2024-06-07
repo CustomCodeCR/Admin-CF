@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AlertService } from "@shared/services/alert.service";
 import { UsuarioService } from "../../services/usuario.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { LogsService } from "@shared/services/logs.service";
+import { LogsRequest } from "@shared/models/logs-request.interface";
 
 @Component({
   selector: "vex-usuario-manage",
@@ -56,12 +58,14 @@ export class UsuarioManageComponent implements OnInit {
   selectedRoleId: number;
 
   form: FormGroup;
+  user = JSON.parse(localStorage.getItem('users'));
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
     private _fb: FormBuilder,
     private _alert: AlertService,
     private _usuarioService: UsuarioService,
+    private _logsService: LogsService,
     public _dialogRef: MatDialogRef<UsuarioManageComponent>
   ) {
     this.initForm();
@@ -175,30 +179,49 @@ export class UsuarioManageComponent implements OnInit {
     }
 
     const id = this.form.get("id").value;
+    const data = this.form.value;
 
     if (id > 0) {
-      this.clientEdit(id);
+      this.clientEdit(id, data);
     } else {
-      this.clientRegister();
+      this.clientRegister(data);
     }
   }
 
-  clientRegister(): void {
-    this._usuarioService.UsuarioRegister(this.form.value).subscribe((resp) => {
+  clientRegister(data): void {
+    this._usuarioService.UsuarioRegister(data).subscribe((resp) => {
       if (resp.isSuccess) {
         this._alert.success("Excelente", resp.message);
         this._dialogRef.close(true);
+
+        const log: LogsRequest = {
+          usuario: `${this.user.family_name}`,
+          modulo: "Usuario",
+          tipoMetodo: "Registro",
+          parametros: JSON.stringify(data),
+          estado: 1
+        };
+        this._logsService.LogRegister(log).subscribe();
       } else {
         this._alert.warn("Atención", resp.message);
       }
     });
   }
 
-  clientEdit(id: number): void {
-    this._usuarioService.UsuarioEdit(id, this.form.value).subscribe((resp) => {
+  clientEdit(id: number, data): void {
+    this._usuarioService.UsuarioEdit(id, data).subscribe((resp) => {
       if (resp.isSuccess) {
         this._alert.success("Excelente", resp.message);
         this._dialogRef.close(true);
+
+        const log: LogsRequest = {
+          usuario: `${this.user.family_name}`,
+          modulo: "Usuario",
+          tipoMetodo: "Edición",
+          parametros: JSON.stringify(data),
+          estado: 1
+        };
+        this._logsService.LogRegister(log).subscribe();
       }
     });
   }

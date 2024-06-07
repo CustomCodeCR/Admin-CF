@@ -7,6 +7,8 @@ import { ExoneracionService } from "../../services/exoneracion.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { UsuarioSelectService } from "@shared/services/usuario-select.service";
 import { SelectAutoComplete } from "@shared/models/select-autocomplete.interface";
+import { LogsService } from "@shared/services/logs.service";
+import { LogsRequest } from "@shared/models/logs-request.interface";
 
 @Component({
   selector: "vex-exoneracion-manage",
@@ -19,6 +21,7 @@ export class ExoneracionManageComponent implements OnInit {
   status = ["En tramite", "Autorizada", "Vencida"];
   tipoExoneracion = ["Concreta", "Generica"];
   clientSelect: SelectAutoComplete[];
+  user = JSON.parse(localStorage.getItem('users'));
 
   form: FormGroup;
 
@@ -48,6 +51,7 @@ export class ExoneracionManageComponent implements OnInit {
     private _fb: FormBuilder,
     private _clientSelectService: UsuarioSelectService,
     private _alert: AlertService,
+    private _logsService: LogsService,
     private _ExoneracionService: ExoneracionService,
     public _dialogRef: MatDialogRef<ExoneracionManageComponent>
   ) {
@@ -109,34 +113,53 @@ export class ExoneracionManageComponent implements OnInit {
     }
 
     const id = this.form.get("id").value;
+    const data = this.form.value;
 
     if (id > 0) {
-      this.clientEdit(id);
+      this.clientEdit(id, data);
     } else {
-      this.clientRegister();
+      this.clientRegister(data);
     }
   }
 
-  clientRegister(): void {
+  clientRegister(data): void {
     this._ExoneracionService
-      .ExoneracionRegister(this.form.value)
+      .ExoneracionRegister(data)
       .subscribe((resp) => {
         if (resp.isSuccess) {
           this._alert.success("Excelente", resp.message);
           this._dialogRef.close(true);
+
+          const log: LogsRequest = {
+            usuario: `${this.user.family_name}`,
+            modulo: "Exoneracion",
+            tipoMetodo: "Registro",
+            parametros: JSON.stringify(data),
+            estado: 1
+          };
+          this._logsService.LogRegister(log).subscribe();
         } else {
           this._alert.warn("Atención", resp.message);
         }
       });
   }
 
-  clientEdit(id: number): void {
+  clientEdit(id: number, data): void {
     this._ExoneracionService
-      .ExoneracionEdit(id, this.form.value)
+      .ExoneracionEdit(id, data)
       .subscribe((resp) => {
         if (resp.isSuccess) {
           this._alert.success("Excelente", resp.message);
           this._dialogRef.close(true);
+
+          const log: LogsRequest = {
+            usuario: `${this.user.family_name}`,
+            modulo: "Exoneracion",
+            tipoMetodo: "Edición",
+            parametros: JSON.stringify(data),
+            estado: 1
+          };
+          this._logsService.LogRegister(log).subscribe();
         }
       });
   }

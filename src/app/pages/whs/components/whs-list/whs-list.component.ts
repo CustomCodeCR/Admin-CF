@@ -13,6 +13,8 @@ import { WhsResponse } from "../../models/whs-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
 import { ActivatedRoute } from "@angular/router";
+import { LogsService } from "@shared/services/logs.service";
+import { LogsRequest } from "@shared/models/logs-request.interface";
 
 @Component({
   selector: "vex-Whs-list",
@@ -24,11 +26,13 @@ export class WhsListComponent implements OnInit {
   component: any;
   parametro: any;
   pol: string;
+  user = JSON.parse(localStorage.getItem('users'));
 
   constructor(
     customTitle: CustomTitleService,
     public _whsService: WhsService,
     public _dialog: MatDialog,
+    private _logsService: LogsService,
     private route: ActivatedRoute
   ) {
     customTitle.set("Whs");
@@ -198,9 +202,32 @@ export class WhsListComponent implements OnInit {
       width: 430,
     }).then((result) => {
       if (result.isConfirmed) {
-        this._whsService
-          .WhsRemove(WhsData.id)
-          .subscribe(() => this.setGetInputsWhs(true));
+        this._whsService.WhsRemove(WhsData.id).subscribe(
+          () => {
+            this.setGetInputsWhs(true);
+
+            const log: LogsRequest = {
+              usuario: `${this.user.family_name}`,
+              modulo: "Whs",
+              tipoMetodo: "Eliminación",
+              parametros: JSON.stringify(WhsData),
+              estado: 1,
+            };
+            this._logsService.LogRegister(log).subscribe();
+          },
+          (error) => {
+            console.error("Error eliminando Whs:", error);
+
+            const log: LogsRequest = {
+              usuario: `${this.user.family_name}`,
+              modulo: "Whs",
+              tipoMetodo: "Eliminación",
+              parametros: JSON.stringify(WhsData),
+              estado: 0,
+            };
+            this._logsService.LogRegister(log).subscribe();
+          }
+        );
       }
     });
   }

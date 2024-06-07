@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AlertService } from "@shared/services/alert.service";
 import { ItinerarioService } from "../../services/itinerario.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { LogsService } from "@shared/services/logs.service";
+import { LogsRequest } from "@shared/models/logs-request.interface";
 
 @Component({
   selector: "vex-itinerario-manage",
@@ -51,6 +53,7 @@ export class ItinerarioManageComponent implements OnInit {
   ];
   icClose = IconsService.prototype.getIcon("icClose");
   configs = configs;
+  user = JSON.parse(localStorage.getItem('users'));
 
   form: FormGroup;
 
@@ -77,6 +80,7 @@ export class ItinerarioManageComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data,
     private _fb: FormBuilder,
     private _alert: AlertService,
+    private _logsService: LogsService,
     private _itinerarioService: ItinerarioService,
     public _dialogRef: MatDialogRef<ItinerarioManageComponent>
   ) {
@@ -130,34 +134,53 @@ export class ItinerarioManageComponent implements OnInit {
     }
 
     const id = this.form.get("id").value;
+    const data = this.form.value;
 
     if (id > 0) {
-      this.clientEdit(id);
+      this.clientEdit(id, data);
     } else {
-      this.clientRegister();
+      this.clientRegister(data);
     }
   }
 
-  clientRegister(): void {
+  clientRegister(data): void {
     this._itinerarioService
-      .ItinerarioRegister(this.form.value)
+      .ItinerarioRegister(data)
       .subscribe((resp) => {
         if (resp.isSuccess) {
           this._alert.success("Excelente", resp.message);
           this._dialogRef.close(true);
+
+          const log: LogsRequest = {
+            usuario: `${this.user.family_name}`,
+            modulo: "Itinerario",
+            tipoMetodo: "Registro",
+            parametros: JSON.stringify(data),
+            estado: 1
+          };
+          this._logsService.LogRegister(log).subscribe();
         } else {
           this._alert.warn("Atención", resp.message);
         }
       });
   }
 
-  clientEdit(id: number): void {
+  clientEdit(id: number, data): void {
     this._itinerarioService
-      .ItinerarioEdit(id, this.form.value)
+      .ItinerarioEdit(id, data)
       .subscribe((resp) => {
         if (resp.isSuccess) {
           this._alert.success("Excelente", resp.message);
           this._dialogRef.close(true);
+
+          const log: LogsRequest = {
+            usuario: `${this.user.family_name}`,
+            modulo: "Itinerario",
+            tipoMetodo: "Edición",
+            parametros: JSON.stringify(data),
+            estado: 1
+          };
+          this._logsService.LogRegister(log).subscribe();
         }
       });
   }

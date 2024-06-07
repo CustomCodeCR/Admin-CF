@@ -12,6 +12,8 @@ import { FinanceManageComponent } from "../finance-manage/finance-manage.compone
 import { FinanceResponse } from "../../models/finance-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
+import { LogsService } from "@shared/services/logs.service";
+import { LogsRequest } from "@shared/models/logs-request.interface";
 
 @Component({
   selector: "vex-finance-list",
@@ -21,10 +23,12 @@ import Swal from "sweetalert2";
 })
 export class FinanceListComponent implements OnInit {
   component: any;
+  user = JSON.parse(localStorage.getItem('users'));
 
   constructor(
     customTitle: CustomTitleService,
     public _financeService: FinanceService,
+    private _logsService: LogsService,
     public _dialog: MatDialog
   ) {
     customTitle.set("Finance");
@@ -150,9 +154,32 @@ export class FinanceListComponent implements OnInit {
       width: 430,
     }).then((result) => {
       if (result.isConfirmed) {
-        this._financeService
-          .FinanceRemove(FinanceData.id)
-          .subscribe(() => this.setGetInputsFinance(true));
+        this._financeService.FinanceRemove(FinanceData.id).subscribe(
+          () => {
+            this.setGetInputsFinance(true);
+
+            const log: LogsRequest = {
+              usuario: `${this.user.family_name}`,
+              modulo: "Finance",
+              tipoMetodo: "Eliminación",
+              parametros: JSON.stringify(FinanceData),
+              estado: 1,
+            };
+            this._logsService.LogRegister(log).subscribe();
+          },
+          (error) => {
+            console.error("Error eliminando finance:", error);
+
+            const log: LogsRequest = {
+              usuario: `${this.user.family_name}`,
+              modulo: "Finance",
+              tipoMetodo: "Eliminación",
+              parametros: JSON.stringify(FinanceData),
+              estado: 0,
+            };
+            this._logsService.LogRegister(log).subscribe();
+          }
+        );
       }
     });
   }

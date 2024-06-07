@@ -12,6 +12,8 @@ import { ExoneracionManageComponent } from "../exoneracion-manage/exoneracion-ma
 import { ExoneracionResponse } from "../../models/exoneracion-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
+import { LogsService } from "@shared/services/logs.service";
+import { LogsRequest } from "@shared/models/logs-request.interface";
 
 @Component({
   selector: "vex-Exoneracion-list",
@@ -21,9 +23,11 @@ import Swal from "sweetalert2";
 })
 export class ExoneracionListComponent implements OnInit {
   component: any;
+  user = JSON.parse(localStorage.getItem('users'));
 
   constructor(
     customTitle: CustomTitleService,
+    private _logsService: LogsService,
     public _ExoneracionService: ExoneracionService,
     public _dialog: MatDialog
   ) {
@@ -138,7 +142,7 @@ export class ExoneracionListComponent implements OnInit {
 
   ExoneracionRemove(ExoneracionData: ExoneracionResponse) {
     Swal.fire({
-      title: `¿Realmente deseas eliminar el Exoneracion ${ExoneracionData.idtra}?`,
+      title: `¿Realmente deseas eliminar la Exoneración ${ExoneracionData.idtra}?`,
       text: "Se borrará de forma permanente!",
       icon: "warning",
       showCancelButton: true,
@@ -150,9 +154,32 @@ export class ExoneracionListComponent implements OnInit {
       width: 430,
     }).then((result) => {
       if (result.isConfirmed) {
-        this._ExoneracionService
-          .ExoneracionRemove(ExoneracionData.id)
-          .subscribe(() => this.setGetInputsExoneracion(true));
+        this._ExoneracionService.ExoneracionRemove(ExoneracionData.id).subscribe(
+          () => {
+            this.setGetInputsExoneracion(true);
+
+            const log: LogsRequest = {
+              usuario: `${this.user.family_name}`,
+              modulo: "Exoneración",
+              tipoMetodo: "Eliminación",
+              parametros: JSON.stringify(ExoneracionData),
+              estado: 1,
+            };
+            this._logsService.LogRegister(log).subscribe();
+          },
+          (error) => {
+            console.error("Error eliminando exoneración:", error);
+
+            const log: LogsRequest = {
+              usuario: `${this.user.family_name}`,
+              modulo: "Exoneración",
+              tipoMetodo: "Eliminación",
+              parametros: JSON.stringify(ExoneracionData),
+              estado: 0,
+            };
+            this._logsService.LogRegister(log).subscribe();
+          }
+        );
       }
     });
   }
