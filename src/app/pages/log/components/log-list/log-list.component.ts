@@ -16,12 +16,12 @@ import { RowClick } from "@shared/models/row-click.interface";
   styleUrls: ['./log-list.component.scss'],
   animations: [stagger40ms, scaleIn400ms, fadeInRight400ms],
 })
-export class UsuarioListComponent implements OnInit {
+export class LogListComponent implements OnInit {
   component: any;
 
   constructor(
     customTitle: CustomTitleService,
-    public _usuarioService: LogService,
+    public _logService: LogService,
     public _dialog: MatDialog
   ) {
     customTitle.set("Logs");
@@ -87,17 +87,17 @@ export class UsuarioListComponent implements OnInit {
 
     /*switch (action) {
       case "edit":
-        this.usuarioEdit(client);
+        this.logEdit(client);
         break;
       case "remove":
-        this.usuarioRemove(client);
+        this.logRemove(client);
         break;
     }*/
 
     return false;
   }
 
-  setGetInputsUsuario(refresh: boolean) {
+  setGetInputslog(refresh: boolean) {
     this.component.filters.refresh = refresh;
     this.formatGetInputs();
   }
