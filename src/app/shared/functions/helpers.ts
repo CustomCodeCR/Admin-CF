@@ -70,6 +70,10 @@ export function getIcon(
     if (["icAdd"].includes(iconName)) {
       iconObj.css = generalCss + COLORS_BADGE.green;
     }
+
+    if (["icStatus"].includes(iconName)) {
+      iconObj.css = generalCss + COLORS_BADGE.yellow;
+    }
   }
 
   return iconObj;

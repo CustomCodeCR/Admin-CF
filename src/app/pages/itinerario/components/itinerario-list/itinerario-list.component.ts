@@ -106,6 +106,9 @@ export class ItinerarioListComponent implements OnInit {
     let client = rowClick.row;
 
     switch (action) {
+      case "status":
+        this.itinerarioState(client);
+        break;
       case "edit":
         this.itinerarioEdit(client);
         break;
@@ -169,6 +172,50 @@ export class ItinerarioListComponent implements OnInit {
               usuario: `${this.user.family_name}`,
               modulo: "Itinerario",
               tipoMetodo: "Eliminación",
+              parametros: JSON.stringify(itinerarioData),
+              estado: 0,
+            };
+            this._logsService.LogRegister(log).subscribe();
+          }
+        );
+      }
+    });
+  }
+
+  itinerarioState(itinerarioData: ItinerarioResponse) {
+    Swal.fire({
+      title: `¿Realmente deseas cambiar el estado del itinerario ${itinerarioData.id}?`,
+      text: "Se realizara un cambio de estado!",
+      icon: "info",
+      showCancelButton: true,
+      focusCancel: true,
+      confirmButtonColor: "rgb(210, 155, 253)",
+      cancelButtonColor: "rgb(79, 109, 253)",
+      confirmButtonText: "Sí, cambiar",
+      cancelButtonText: "Cancelar",
+      width: 430,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._itinerarioService.ItinerarioStatus(itinerarioData.id).subscribe(
+          () => {
+            this.setGetInputsitinerario(true);
+
+            const log: LogsRequest = {
+              usuario: `${this.user.family_name}`,
+              modulo: "Itinerario",
+              tipoMetodo: "Edición",
+              parametros: JSON.stringify(itinerarioData),
+              estado: 1,
+            };
+            this._logsService.LogRegister(log).subscribe();
+          },
+          (error) => {
+            console.error("Error eliminando itinerario:", error);
+
+            const log: LogsRequest = {
+              usuario: `${this.user.family_name}`,
+              modulo: "Itinerario",
+              tipoMetodo: "Edición",
               parametros: JSON.stringify(itinerarioData),
               estado: 0,
             };

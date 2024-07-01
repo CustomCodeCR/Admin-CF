@@ -29,6 +29,7 @@ import icAddDetail from "@iconify/icons-ic/twotone-add";
 import icCalendar from "@iconify/icons-ic/twotone-calendar-month";
 import icFinance from "@iconify/icons-ic/twotone-payment";
 import icExoneracion from "@iconify/icons-ic/round-list-alt"
+import icStatus from "@iconify/icons-ic/twotone-change-circle"
 
 @Injectable({
   providedIn: "root",
@@ -59,93 +60,74 @@ export class IconsService {
     if (icon == "icManage") {
       return icManage;
     }
-
     if (icon == "icWarehouse") {
       return icWarehouse;
     }
-
     if (icon == "icEdit") {
       return icEdit;
     }
-
     if (icon == "icDelete") {
       return icDelete;
     }
-
     if (icon == "icArrowDropDown") {
       return icArrowDropDown;
     }
-
     if (icon == "icSearch") {
       return icSearch;
     }
-
     if (icon == "icClose") {
       return icClose;
     }
-
     if (icon == "icName") {
       return icName;
     }
-
     if (icon == "icDescription") {
       return icDescription;
     }
-
     if (icon == "icVisibility") {
       return icVisibility;
     }
-
     if (icon == "icVisibilityOff") {
       return icVisibilityOff;
     }
-
     if (icon == "icMail") {
       return icMail;
     }
-
     if (icon == "icViewHeadline") {
       return icViewHeadline;
     }
-
     if (icon == "icLabel") {
       return icLabel;
     }
-
     if (icon == "icProvider") {
       return icProvider;
     }
-
     if (icon == "icDashboard") {
       return icDashboard;
     }
-
     if (icon == "icCategory") {
       return icCategory;
     }
-
     if (icon == "icCloudDownload") {
       return icCloudDownload;
     }
-
     if (icon == "icToday") {
       return icToday;
     }
-
     if (icon == "icRefresh") {
       return icRefresh;
     }
-
     if (icon == "icCalendar") {
       return icCalendar
     }
-
     if (icon == "icFinance") {
       return icFinance
     }
-
     if (icon == "icExoneracion") {
       return icExoneracion
+    }
+    if (icon == "icStatus") {
+      return icStatus
     }
   }
 }

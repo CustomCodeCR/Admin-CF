@@ -16,6 +16,7 @@ export interface ItinerarioResponse {
   estado: number;
   estadoItinerario: string;
   badgeColor: string;
+  icStatus: any;
   icEdit: any;
   icDelete: any;
 }

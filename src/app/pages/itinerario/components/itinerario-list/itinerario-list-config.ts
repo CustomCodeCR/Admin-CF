@@ -239,6 +239,18 @@ const tableColumns: TableColumns<ItinerarioResponse>[] = [
   {
     label: "",
     cssLabel: [],
+    property: "icStatus",
+    cssProperty: [],
+    type: "icon",
+    action: "status",
+    sticky: false,
+    sort: false,
+    visible: true,
+    download: false,
+  },
+  {
+    label: "",
+    cssLabel: [],
     property: "icEdit",
     cssProperty: [],
     type: "icon",

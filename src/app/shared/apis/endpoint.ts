@@ -19,6 +19,7 @@ export const endpoint = {
   ITINERARIO_REGISTER: "Itinerario/Register/",
   ITINERARIO_EDIT: "Itinerario/Edit/",
   ITINERARIO_REMOVE: "Itinerario/Remove/",
+  ITINERARIO_STATE: "Itinerario/State/",
 
   // EMPLEO MODULE
   LIST_EMPLEO: "Empleo",

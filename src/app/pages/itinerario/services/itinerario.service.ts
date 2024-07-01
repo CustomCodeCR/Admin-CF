@@ -62,6 +62,7 @@ export class ItinerarioService {
               prov.badgeColor = "text-gray bg-gray-light";
               break;
           }
+          prov.icStatus = getIcon("icStatus","Cambiar Estado",true);
           prov.icEdit = getIcon("icEdit", "Editar Itinerario", true);
           prov.icDelete = getIcon("icDelete", "Eliminar Itinerario", true);
         });
@@ -114,6 +115,18 @@ export class ItinerarioService {
       map((resp: BaseResponse) => {
         if (resp.isSuccess) {
           this.logAction("Eliminación", id);
+          this._alert.success("Excelente", resp.message);
+        }
+      })
+    );
+  }
+
+  ItinerarioStatus(id: number): Observable<void> {
+    const requestUrl = `${env.api}${endpoint.ITINERARIO_STATE}${id}`;
+    return this._http.put(requestUrl, "").pipe(
+      map((resp: BaseResponse) => {
+        if (resp.isSuccess) {
+          this.logAction("Edición", id);
           this._alert.success("Excelente", resp.message);
         }
       })

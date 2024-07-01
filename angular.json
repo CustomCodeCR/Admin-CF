@@ -124,7 +124,8 @@
               "@iconify/icons-ic/twotone-add-shopping-cart",
               "@iconify/icons-ic/twotone-remove",
               "@iconify/icons-ic/twotone-add",
-              "@iconify/icons-ic/twotone-calendar-month"
+              "@iconify/icons-ic/twotone-calendar-month",
+              "@iconify/icons-ic/twotone-change-circle"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
