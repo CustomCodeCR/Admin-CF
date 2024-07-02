@@ -13,6 +13,7 @@ export interface TableColumns<T> {
     | "icon"
     | "button"
     | "badge"
+    | "badge2"
     | "image"
     | "currency"
     | "textUppercase"

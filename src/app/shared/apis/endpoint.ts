@@ -59,6 +59,39 @@ export const endpoint = {
   //LOGS MODULE
   LIST_LOGS: "Logs",
   LOGS_REGISTER: "Logs/Register/",
+
+  //POL MODULE
+  LIST_POL: "Pol",
+  LIST_SELECT_POL_WHS: "Pol/Whs",
+  LIST_SELECT_POL: "Pol/Select",
+  POL_BY_ID: "Pol/",
+  POL_REGISTER: "Pol/Register/",
+  POL_EDIT: "Pol/Edit/",
+  POL_REMOVE: "Pol/Remove/",
+
+  //POD MODULE
+  LIST_POD: "Pod",
+  LIST_SELECT_POD: "Pod/Select",
+  POD_BY_ID: "Pod/",
+  POD_REGISTER: "Pod/Register/",
+  POD_EDIT: "Pod/Edit/",
+  POD_REMOVE: "Pod/Remove/",
+
+  //ORIGEN MODULE
+  LIST_ORIGEN: "Origen",
+  LIST_SELECT_ORIGEN: "Origen/Select",
+  ORIGEN_BY_ID: "Origen/",
+  ORIGEN_REGISTER: "Origen/Register/",
+  ORIGEN_EDIT: "Origen/Edit/",
+  ORIGEN_REMOVE: "Origen/Remove/",
+
+  //DESTINO MODULE
+  LIST_DESTINO: "Destino",
+  LIST_SELECT_DESTINO: "Destino/Select",
+  DESTINO_BY_ID: "Destino/",
+  DESTINO_REGISTER: "Destino/Register/",
+  DESTINO_EDIT: "Destino/Edit/",
+  DESTINO_REMOVE: "Destino/Remove/",
 };
 
 export const httpOptions = {

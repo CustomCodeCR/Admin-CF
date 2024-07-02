@@ -7,6 +7,11 @@ import { ItinerarioService } from "../../services/itinerario.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { LogsService } from "@shared/services/logs.service";
 import { LogsRequest } from "@shared/models/logs-request.interface";
+import { SelectAutoComplete } from "@shared/models/select-autocomplete.interface";
+import { PodService } from "@shared/services/pod.service";
+import { PolService } from "@shared/services/pol.service";
+import { OrigenService } from "@shared/services/origen.service";
+import { DestinoService } from "@shared/services/destino.service";
 
 @Component({
   selector: "vex-itinerario-manage",
@@ -16,41 +21,10 @@ import { LogsRequest } from "@shared/models/logs-request.interface";
 export class ItinerarioManageComponent implements OnInit {
   transporteOptions = ["Aereo", "Maritimo", "Terrestre"];
   modalidadOptions = ["LCL", "LTL", "FCL", "FTL", "Multimodal"];
-  polOptions = [
-    "Ningbo, China",
-    "Shanghai, China",
-    "Qingdao, China",
-    "Xiamen, China",
-    "Yantian, China",
-    "Guangzhou, China",
-    "Miami, USA",
-    "SJO, CRC",
-    "PVG, China",
-    "NKG, China",
-    "PEK, China",
-    "CFZ, Panama",
-    "Ciudad Hidalgo, MX",
-    "Ciudad de Guatemala, Guatemala",
-    "Managua, Nicaragua",
-    "San Pedro Sula, Honduras",
-    "San Salvador, El Salvador",
-    "Puerto Moin, CRC",
-    "Puerto Caldera, CRC"
-  ];
-  podOptions = [
-    "CFZ, Panama",
-    "SJO, CRC",
-    "Ciudad Guatemala, Guatemala",
-    "San Pedro Sula, Honduras",
-    "San Salvador, El Salvador",
-    "Managua, Nicaragua",
-    "Newark (New Jersey), USA",
-    "Los Angeles (California), USA",
-    "Port Everglades (Florida), USA",
-    "Savannah (Georgia), USA",
-    "Wilmington (North Carolina), USA",
-    "Houston (Texas), USA"
-  ];
+  polSelect: SelectAutoComplete[];
+  origenSelect: SelectAutoComplete[];
+  podSelect: SelectAutoComplete[];
+  destinoSelect: SelectAutoComplete[];
   icClose = IconsService.prototype.getIcon("icClose");
   configs = configs;
   user = JSON.parse(localStorage.getItem('users'));
@@ -82,15 +56,47 @@ export class ItinerarioManageComponent implements OnInit {
     private _alert: AlertService,
     private _logsService: LogsService,
     private _itinerarioService: ItinerarioService,
+    private _podSelectService: PodService,
+    private _polSelectService: PolService,
+    private _origenSelectService: OrigenService,
+    private _destinoSelectService: DestinoService,
     public _dialogRef: MatDialogRef<ItinerarioManageComponent>
   ) {
     this.initForm();
   }
 
   ngOnInit(): void {
+    this.listSelectPod();
+    this.listSelectPol();
+    this.listSelectOrigen();
+    this.listSelectDestino();
     if (this.data != null) {
       this.clientById(this.data.data.id);
     }
+  }
+
+  listSelectPod(): void {
+    this._podSelectService
+      .listSelectPod()
+      .subscribe((resp) => (this.podSelect = resp));
+  }
+
+  listSelectPol(): void {
+    this._polSelectService
+      .listSelectPol()
+      .subscribe((resp) => (this.polSelect = resp));
+  }
+
+  listSelectOrigen(): void {
+    this._origenSelectService
+      .listSelectOrigen()
+      .subscribe((resp) => (this.origenSelect = resp));
+  }
+
+  listSelectDestino(): void {
+    this._destinoSelectService
+      .listSelectDestino()
+      .subscribe((resp) => (this.destinoSelect = resp));
   }
 
   selectedImageOrigen(file: File) {

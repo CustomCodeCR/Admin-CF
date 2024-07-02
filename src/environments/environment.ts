@@ -3,6 +3,6 @@ export const environment = {
   environment: "local",
   clientId:
     "441710587933-o28p6ici53uclbea0rjveo6gcdvkuaes.apps.googleusercontent.com",
-  api: "https://api.logisticacastrofallas.com/api/",
+  api: "http://localhost:5218/api/",
   filenameCsv: "dev-grupocastrofallas",
 };

@@ -75,17 +75,12 @@
       >
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>POD</mat-label>
-      <mat-select formControlName="pod">
-        <mat-option *ngFor="let option of pod" [value]="option">{{
-          option
-        }}</mat-option>
-      </mat-select>
-      <mat-error *ngIf="form.get('pod').hasError('required')">
-        Campo POD es requerido.
-      </mat-error>
-    </mat-form-field>
+    <app-select-autocomplete
+      label="POD"
+      [control]="form.get('pod')"
+      [required]="true"
+      [listOptions]="podSelect"
+    ></app-select-autocomplete>
 
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Detalle</mat-label>

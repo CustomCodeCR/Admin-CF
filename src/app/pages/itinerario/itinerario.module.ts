@@ -13,6 +13,7 @@ import { ExportExcelComponent } from "@shared/components/reusables/export-excel/
 import { FilterDateRangeYmdComponent } from "@shared/components/reusables/filter-date-range-ymd/filter-date-range-ymd.component";
 import { ButtonResetFiltersComponent } from "@shared/components/reusables/button-reset-filters/button-reset-filters.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
+import { SelectAutocompleteComponent } from "@shared/components/reusables/select-autocomplete/select-autocomplete.component";
 
 @NgModule({
   declarations: [ItinerarioListComponent, ItinerarioManageComponent],
@@ -28,6 +29,7 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
     ButtonResetFiltersComponent,
     ImgSelectorComponent,
     MatDatepickerModule,
+    SelectAutocompleteComponent,
   ],
 })
 export class ItinerarioModule {}

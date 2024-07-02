@@ -1,51 +1,38 @@
-import { filter } from "rxjs/operators";
-import { Component, OnInit } from "@angular/core";
-import { CustomTitleService } from "@shared/services/custom-title.service";
-import { fadeInRight400ms } from "src/@vex/animations/fade-in-right.animation";
-import { scaleIn400ms } from "src/@vex/animations/scale-in.animation";
-import { stagger40ms } from "src/@vex/animations/stagger.animation";
-import { WhsService } from "../../services/whs.service";
-import { componentSettings } from "./whs-list-config";
-import { DateRange, FiltersBox } from "@shared/models/search-options.interface";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { WhsManageComponent } from "../whs-manage/whs-manage.component";
-import { WhsResponse } from "../../models/whs-response.interface";
-import { RowClick } from "@shared/models/row-click.interface";
-import Swal from "sweetalert2";
-import { ActivatedRoute } from "@angular/router";
-import { LogsService } from "@shared/services/logs.service";
-import { LogsRequest } from "@shared/models/logs-request.interface";
+import { Component, OnInit } from '@angular/core';
+import { fadeInRight400ms } from 'src/@vex/animations/fade-in-right.animation';
+import { scaleIn400ms } from 'src/@vex/animations/scale-in.animation';
+import { stagger40ms } from 'src/@vex/animations/stagger.animation';
+import { PodService } from '../../services/pod.service';
+import { CustomTitleService } from '@shared/services/custom-title.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { LogsService } from '@shared/services/logs.service';
+import { LogsRequest } from '@shared/models/logs-request.interface';
+import Swal from 'sweetalert2';
+import { PodResponse } from '../../models/pod-response.interface';
+import { PodManageComponent } from '../pod-manage/pod-manage.component';
+import { RowClick } from '@shared/models/row-click.interface';
+import { DateRange, FiltersBox } from '@shared/models/search-options.interface';
+import { componentSettings } from './pod-list-config';
 
 @Component({
-  selector: "vex-Whs-list",
-  templateUrl: "./whs-list.component.html",
-  styleUrls: ["./whs-list.component.scss"],
+  selector: 'vex-pod-list',
+  templateUrl: './pod-list.component.html',
+  styleUrls: ['./pod-list.component.scss'],
   animations: [stagger40ms, scaleIn400ms, fadeInRight400ms],
 })
-export class WhsListComponent implements OnInit {
+export class PodListComponent implements OnInit {
   component: any;
-  parametro: any;
-  pol: string;
   user = JSON.parse(localStorage.getItem('users'));
 
   constructor(
     customTitle: CustomTitleService,
-    public _whsService: WhsService,
-    public _dialog: MatDialog,
+    public _podService: PodService,
     private _logsService: LogsService,
-    private route: ActivatedRoute
-  ) {
-    customTitle.set("Whs");
-  }
+    public _dialog: MatDialog
+  ) {customTitle.set("Pod"); }
 
   ngOnInit(): void {
     this.component = componentSettings;
-    this.route.params.subscribe((params) => {
-      this.parametro = params["parametro"];
-      this.component.filters.whs = params["parametro"].replace(/-/g, ' ');
-      this.pol = params["parametro"].replace(/-/g, ' ');
-      this.formatGetInputs();
-    });
   }
 
   setMenu(value: number) {
@@ -73,11 +60,7 @@ export class WhsListComponent implements OnInit {
   formatGetInputs() {
     let str = "";
 
-    if (this.component.filters.whs != "") {
-      str += `&whs=${this.component.filters.whs}`;
-    }
-
-    if (this.component.filters.textFilter != "") {
+    if (this.component.filters.textFilter != null) {
       str += `&numFilter=${this.component.filters.numFilter}&textFilter=${this.component.filters.textFilter}`;
     }
 
@@ -104,44 +87,40 @@ export class WhsListComponent implements OnInit {
 
   openDialogRegister() {
     this._dialog
-      .open(WhsManageComponent, {
-        data: {
-          parametro: this.parametro,
-        },
+      .open(PodManageComponent, {
         disableClose: true,
         width: "400px",
       })
       .afterClosed()
       .subscribe((res) => {
         if (res) {
-          this.setGetInputsWhs(true);
+          this.setGetInputsPod(true);
         }
       });
   }
 
-  rowClick(rowClick: RowClick<WhsResponse>) {
+  rowClick(rowClick: RowClick<PodResponse>) {
     let action = rowClick.action;
     let client = rowClick.row;
 
     switch (action) {
       case "edit":
-        this.WhsEdit(client);
+        this.podEdit(client);
         break;
       case "remove":
-        this.WhsRemove(client);
+        this.podRemove(client);
         break;
     }
 
     return false;
   }
 
-  WhsEdit(WhsData: WhsResponse) {
+  podEdit(podData: PodResponse) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = WhsData;
-    dialogConfig.data.parametro = this.parametro.replace(/-/g, ' ');
+    dialogConfig.data = podData;
 
     this._dialog
-      .open(WhsManageComponent, {
+      .open(PodManageComponent, {
         data: dialogConfig,
         disableClose: true,
         width: "400px",
@@ -149,14 +128,14 @@ export class WhsListComponent implements OnInit {
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {
-          this.setGetInputsWhs(true);
+          this.setGetInputsPod(true);
         }
       });
   }
 
-  WhsRemove(WhsData: WhsResponse) {
+  podRemove(podData: PodResponse) {
     Swal.fire({
-      title: `¿Realmente deseas eliminar el Whs ${WhsData.idtra}?`,
+      title: `¿Realmente deseas eliminar el POD ${podData.id}?`,
       text: "Se borrará de forma permanente!",
       icon: "warning",
       showCancelButton: true,
@@ -168,27 +147,27 @@ export class WhsListComponent implements OnInit {
       width: 430,
     }).then((result) => {
       if (result.isConfirmed) {
-        this._whsService.WhsRemove(WhsData.id).subscribe(
+        this._podService.PodRemove(podData.id).subscribe(
           () => {
-            this.setGetInputsWhs(true);
+            this.setGetInputsPod(true);
 
             const log: LogsRequest = {
               usuario: `${this.user.family_name}`,
-              modulo: "Whs",
+              modulo: "POD",
               tipoMetodo: "Eliminación",
-              parametros: JSON.stringify(WhsData),
+              parametros: JSON.stringify(podData),
               estado: 1,
             };
             this._logsService.LogRegister(log).subscribe();
           },
           (error) => {
-            console.error("Error eliminando Whs:", error);
+            console.error("Error eliminando POD:", error);
 
             const log: LogsRequest = {
               usuario: `${this.user.family_name}`,
-              modulo: "Whs",
+              modulo: "POD",
               tipoMetodo: "Eliminación",
-              parametros: JSON.stringify(WhsData),
+              parametros: JSON.stringify(podData),
               estado: 0,
             };
             this._logsService.LogRegister(log).subscribe();
@@ -198,12 +177,12 @@ export class WhsListComponent implements OnInit {
     });
   }
 
-  setGetInputsWhs(refresh: boolean) {
+  setGetInputsPod(refresh: boolean) {
     this.component.filters.refresh = refresh;
     this.formatGetInputs();
   }
 
   get getDownloadUrl() {
-    return `Whs?whs=${this.pol}&Download=True`;
+    return `itinerario?Download=True`;
   }
 }

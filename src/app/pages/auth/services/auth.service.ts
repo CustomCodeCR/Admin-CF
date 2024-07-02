@@ -79,6 +79,7 @@ export class AuthService {
     localStorage.removeItem("token");
     localStorage.removeItem("users");
     localStorage.removeItem("authType");
+    localStorage.removeItem("appSidebarData")
     this.user.next(null);
     window.location.reload();
   }

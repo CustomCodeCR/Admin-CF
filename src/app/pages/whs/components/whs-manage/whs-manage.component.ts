@@ -9,6 +9,7 @@ import { UsuarioSelectService } from "@shared/services/usuario-select.service";
 import { SelectAutoComplete } from "@shared/models/select-autocomplete.interface";
 import { LogsService } from "@shared/services/logs.service";
 import { LogsRequest } from "@shared/models/logs-request.interface";
+import { PodService } from "@shared/services/pod.service";
 
 @Component({
   selector: "vex-whs-manage",
@@ -30,18 +31,7 @@ export class WhsManageComponent implements OnInit {
   status = ["En WHS", "Preparando para Envio", "Salida"];
   tipoRegistro = ["Ingreso", "Salida"];
   clientSelect: SelectAutoComplete[];
-  pod = [
-    "Miami, USA",
-    "Ciudad de Guatemala, Guatemala",
-    "San Pedro Sula, Honduras",
-    "Tegucigalpa, Honduras",
-    "Managua, Nicaragua",
-    "San Jose, Costa Rica",
-    "San Salvador, El Salvador",
-    "Colon Free Zone, Panama",
-    "Ciudad de Panama, Panama",
-    "Lima, Peru",
-  ];
+  podSelect: SelectAutoComplete[];
 
   form: FormGroup;
   user = JSON.parse(localStorage.getItem('users'));
@@ -76,6 +66,7 @@ export class WhsManageComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data,
     private _fb: FormBuilder,
     private _clientSelectService: UsuarioSelectService,
+    private _podSelectService: PodService,
     private _alert: AlertService,
     private _WhsService: WhsService,
     private _logsService: LogsService,
@@ -86,39 +77,24 @@ export class WhsManageComponent implements OnInit {
 
   ngOnInit(): void {
     this.listSelectClients();
+    this.listSelectPod();
     if (this.data.data != null) {
       this.clientById(this.data.data.id);
     }
 
-    switch (this.data.parametro) {
-      case "guatemala":
-        this.pol = ["Ciudad Guatemala, Guatemala"];
-        break;
-      case "honduras":
-        this.pol = ["San Pedro Sula, Honduras"];
-        break;
-      case "miami":
-        this.pol = ["Miami, USA"];
-        break;
-      case "panama":
-        this.pol = ["CFZ, Panama"];
-        break;
-      case "sanjose":
-        this.pol = ["SJO, CRC"];
-        break;
-      case "ningbo":
-        this.pol = ["Ningbo, China"];
-        break;
-      case "shanghai":
-        this.pol = ["Shanghai, China"];
-        break;
-    }
+    this.pol = [this.data.parametro.replace(/-/g, ' ')]
   }
 
   listSelectClients(): void {
     this._clientSelectService
       .listSelectUsuarios()
       .subscribe((resp) => (this.clientSelect = resp));
+  }
+
+  listSelectPod(): void {
+    this._podSelectService
+      .listSelectPod()
+      .subscribe((resp) => (this.podSelect = resp));
   }
 
   selectedImageWhsReceipt(file: File) {
