@@ -32,13 +32,6 @@ export class UsuarioManageComponent implements OnInit {
       { key: "11", name: "My Documentation" },
       { key: "12", name: "Exoneraciones" },
       { key: "13", name: "WHS" },
-      { key: "14", name: "Miami, USA" },
-      { key: "15", name: "CFZ, Panama" },
-      { key: "16", name: "SJO, CRC" },
-      { key: "17", name: "Ningbo, China" },
-      { key: "18", name: "Shanghai, China" },
-      { key: "19", name: "Ciudad Guatemala, Guatemala" },
-      { key: "20", name: "San Pedro Sula, Honduras" },
       { key: "21", name: "My Finance" },
       { key: "22", name: "Directorio Interno" },
     ],
@@ -51,6 +44,7 @@ export class UsuarioManageComponent implements OnInit {
       { key: "6", name: "Finance" },
       { key: "7", name: "Exoneraciones" },
       { key: "8", name: "Logs" },
+      { key: "9", name: "Datos" },
     ],
   };
   isAdmin: boolean = false;
@@ -103,7 +97,7 @@ export class UsuarioManageComponent implements OnInit {
       telefono: ["", [Validators.required]],
       direccion: ["", [Validators.required]],
       pais: ["", [Validators.required]],
-      paginas: ["1,2,3,4,5,6,7,8"],
+      paginas: ["1,2,3,4,5,6,7,8,9"],
       imagen: [""],
       estado: ["", [Validators.required]],
     });
