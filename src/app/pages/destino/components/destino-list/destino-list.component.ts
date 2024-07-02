@@ -15,9 +15,9 @@ import { LogsService } from '@shared/services/logs.service';
 import { CustomTitleService } from '@shared/services/custom-title.service';
 
 @Component({
-  selector: 'vex-Destino-list',
-  templateUrl: './Destino-list.component.html',
-  styleUrls: ['./Destino-list.component.scss'],
+  selector: 'vex-destino-list',
+  templateUrl: './destino-list.component.html',
+  styleUrls: ['./destino-list.component.scss'],
   animations: [stagger40ms, scaleIn400ms, fadeInRight400ms],
 })
 export class DestinoListComponent implements OnInit {

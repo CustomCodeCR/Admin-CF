@@ -9,9 +9,9 @@ import { DestinoService } from '../../services/destino.service';
 import { LogsService } from '@shared/services/logs.service';
 
 @Component({
-  selector: 'vex-Destino-manage',
-  templateUrl: './Destino-manage.component.html',
-  styleUrls: ['./Destino-manage.component.scss']
+  selector: 'vex-destino-manage',
+  templateUrl: './destino-manage.component.html',
+  styleUrls: ['./destino-manage.component.scss']
 })
 export class DestinoManageComponent implements OnInit {
   icClose = IconsService.prototype.getIcon("icClose");
