@@ -7,8 +7,8 @@ export interface ItinerarioRequest {
   carrier: string;
   vessel: string;
   voyage: string;
-  origen: File;
-  destino: File;
+  origen: string;
+  destino: string;
   transporte: string;
   modalidad: string;
   estado: number;

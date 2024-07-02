@@ -1,35 +1,35 @@
 import { Component, OnInit } from '@angular/core';
+import { LogsRequest } from '@shared/models/logs-request.interface';
 import { fadeInRight400ms } from 'src/@vex/animations/fade-in-right.animation';
 import { scaleIn400ms } from 'src/@vex/animations/scale-in.animation';
 import { stagger40ms } from 'src/@vex/animations/stagger.animation';
-import { PodService } from '../../services/pod.service';
-import { CustomTitleService } from '@shared/services/custom-title.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { LogsService } from '@shared/services/logs.service';
-import { LogsRequest } from '@shared/models/logs-request.interface';
+import { OrigenResponse } from '../../models/origen-response.interface';
 import Swal from 'sweetalert2';
-import { PodResponse } from '../../models/pod-response.interface';
-import { PodManageComponent } from '../pod-manage/pod-manage.component';
+import { OrigenManageComponent } from '../origen-manage/origen-manage.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { RowClick } from '@shared/models/row-click.interface';
 import { DateRange, FiltersBox } from '@shared/models/search-options.interface';
-import { componentSettings } from './pod-list-config';
+import { componentSettings } from './origen-list-config';
+import { OrigenService } from '../../services/origen.service';
+import { LogsService } from '@shared/services/logs.service';
+import { CustomTitleService } from '@shared/services/custom-title.service';
 
 @Component({
-  selector: 'vex-pod-list',
-  templateUrl: './pod-list.component.html',
-  styleUrls: ['./pod-list.component.scss'],
+  selector: 'vex-origen-list',
+  templateUrl: './origen-list.component.html',
+  styleUrls: ['./origen-list.component.scss'],
   animations: [stagger40ms, scaleIn400ms, fadeInRight400ms],
 })
-export class PodListComponent implements OnInit {
+export class OrigenListComponent implements OnInit {
   component: any;
   user = JSON.parse(localStorage.getItem('users'));
 
   constructor(
     customTitle: CustomTitleService,
-    public _podService: PodService,
+    public _origenService: OrigenService,
     private _logsService: LogsService,
     public _dialog: MatDialog
-  ) {customTitle.set("Pod"); }
+  ) {customTitle.set("Origen"); }
 
   ngOnInit(): void {
     this.component = componentSettings;
@@ -87,40 +87,40 @@ export class PodListComponent implements OnInit {
 
   openDialogRegister() {
     this._dialog
-      .open(PodManageComponent, {
+      .open(OrigenManageComponent, {
         disableClose: true,
         width: "400px",
       })
       .afterClosed()
       .subscribe((res) => {
         if (res) {
-          this.setGetInputsPod(true);
+          this.setGetInputsOrigen(true);
         }
       });
   }
 
-  rowClick(rowClick: RowClick<PodResponse>) {
+  rowClick(rowClick: RowClick<OrigenResponse>) {
     let action = rowClick.action;
     let client = rowClick.row;
 
     switch (action) {
       case "edit":
-        this.podEdit(client);
+        this.OrigenEdit(client);
         break;
       case "remove":
-        this.podRemove(client);
+        this.OrigenRemove(client);
         break;
     }
 
     return false;
   }
 
-  podEdit(podData: PodResponse) {
+  OrigenEdit(OrigenData: OrigenResponse) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = podData;
+    dialogConfig.data = OrigenData;
 
     this._dialog
-      .open(PodManageComponent, {
+      .open(OrigenManageComponent, {
         data: dialogConfig,
         disableClose: true,
         width: "400px",
@@ -128,14 +128,14 @@ export class PodListComponent implements OnInit {
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {
-          this.setGetInputsPod(true);
+          this.setGetInputsOrigen(true);
         }
       });
   }
 
-  podRemove(podData: PodResponse) {
+  OrigenRemove(OrigenData: OrigenResponse) {
     Swal.fire({
-      title: `¿Realmente deseas eliminar el POD ${podData.id}?`,
+      title: `¿Realmente deseas eliminar el Origen ${OrigenData.id}?`,
       text: "Se borrará de forma permanente!",
       icon: "warning",
       showCancelButton: true,
@@ -147,27 +147,27 @@ export class PodListComponent implements OnInit {
       width: 430,
     }).then((result) => {
       if (result.isConfirmed) {
-        this._podService.PodRemove(podData.id).subscribe(
+        this._origenService.OrigenRemove(OrigenData.id).subscribe(
           () => {
-            this.setGetInputsPod(true);
+            this.setGetInputsOrigen(true);
 
             const log: LogsRequest = {
               usuario: `${this.user.family_name}`,
-              modulo: "POD",
+              modulo: "Origen",
               tipoMetodo: "Eliminación",
-              parametros: JSON.stringify(podData),
+              parametros: JSON.stringify(OrigenData),
               estado: 1,
             };
             this._logsService.LogRegister(log).subscribe();
           },
           (error) => {
-            console.error("Error eliminando POD:", error);
+            console.error("Error eliminando Origen:", error);
 
             const log: LogsRequest = {
               usuario: `${this.user.family_name}`,
-              modulo: "POD",
+              modulo: "Origen",
               tipoMetodo: "Eliminación",
-              parametros: JSON.stringify(podData),
+              parametros: JSON.stringify(OrigenData),
               estado: 0,
             };
             this._logsService.LogRegister(log).subscribe();
@@ -177,12 +177,12 @@ export class PodListComponent implements OnInit {
     });
   }
 
-  setGetInputsPod(refresh: boolean) {
+  setGetInputsOrigen(refresh: boolean) {
     this.component.filters.refresh = refresh;
     this.formatGetInputs();
   }
 
   get getDownloadUrl() {
-    return `pod?Download=True`;
+    return `origen?Download=True`;
   }
 }

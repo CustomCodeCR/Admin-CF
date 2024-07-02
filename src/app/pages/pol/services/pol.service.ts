@@ -89,7 +89,7 @@ export class PolService {
   }
 
   PolRegister(pol: PolRequest): Observable<BaseResponse> {
-    const requestUrl = `${env.api}${endpoint.ITINERARIO_REGISTER}`;
+    const requestUrl = `${env.api}${endpoint.POL_REGISTER}`;
     return this._http.post(requestUrl, pol).pipe(
       map((resp: BaseResponse) => {
         if (resp.isSuccess) {

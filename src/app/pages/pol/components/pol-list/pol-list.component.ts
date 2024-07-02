@@ -183,6 +183,6 @@ export class PolListComponent implements OnInit {
   }
 
   get getDownloadUrl() {
-    return `itinerario?Download=True`;
+    return `pol?Download=True`;
   }
 }

@@ -1,19 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BaseResponse } from '@shared/models/base-api-response.interface';
 import { AlertService } from '@shared/services/alert.service';
-import { Observable } from 'rxjs';
+import { DestinoRequest } from '../models/destino-request.interface';
 import { map } from 'rxjs/operators';
-import { PodRequest } from '../models/pod-request.interface';
-import { PodByIdResponse, PodResponse } from '../models/pod-response.interface';
+import { BaseResponse } from '@shared/models/base-api-response.interface';
+import { Observable } from 'rxjs';
 import { getIcon } from '@shared/functions/helpers';
+import { DestinoByIdResponse, DestinoResponse } from '../models/destino-response.interface';
 import { endpoint } from "@shared/apis/endpoint";
 import { environment as env } from "src/environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
-export class PodService {
+export class DestinoService {
 
   constructor(private _http: HttpClient, private _alert: AlertService) { }
 
@@ -25,7 +25,7 @@ export class PodService {
     const requestUrl = `${env.api}${endpoint.LOGS_REGISTER}`;
     const logData = {
       Usuario: `${localStorage.getItem('username')}`, 
-      Modulo: "Pod",
+      Modulo: "Destino",
       TipoMetodo: action,
       Parametros: JSON.stringify({ id, ...params }),
       Estado: 1,
@@ -41,14 +41,14 @@ export class PodService {
     getInputs: string
   ): Observable<BaseResponse> {
     const requestUrl = `${env.api}${
-      endpoint.LIST_POD
+      endpoint.LIST_DESTINO
     }?records=${size}&sort=${sort}&order=${order}&numPage=${
       page + 1
     }${getInputs}`;
 
     return this._http.get<BaseResponse>(requestUrl).pipe(
       map((resp: BaseResponse) => {
-        resp.data.forEach(function (prov: PodResponse) {
+        resp.data.forEach(function (prov: DestinoResponse) {
           switch (prov.estado) {
             case 0:
               prov.badgeColor = "text-gray bg-gray-light";
@@ -60,16 +60,16 @@ export class PodService {
               prov.badgeColor = "text-gray bg-gray-light";
               break;
           }
-          prov.icEdit = getIcon("icEdit", "Editar POD", true);
-          prov.icDelete = getIcon("icDelete", "Eliminar POD", true);
+          prov.icEdit = getIcon("icEdit", "Editar Destino", true);
+          prov.icDelete = getIcon("icDelete", "Eliminar Destino", true);
         });
         return resp;
       })
     );
   }
 
-  PodById(id: number): Observable<PodByIdResponse> {
-    const requestUrl = `${env.api}${endpoint.POD_BY_ID}${id}`;
+  DestinoById(id: number): Observable<DestinoByIdResponse> {
+    const requestUrl = `${env.api}${endpoint.DESTINO_BY_ID}${id}`;
     return this._http.get(requestUrl).pipe(
       map((resp: BaseResponse) => {
         return resp.data;
@@ -77,35 +77,37 @@ export class PodService {
     );
   }
 
-  PodRegister(Pod: PodRequest): Observable<BaseResponse> {
-    const requestUrl = `${env.api}${endpoint.POD_REGISTER}`;
-    return this._http.post(requestUrl, Pod).pipe(
+  DestinoRegister(Destino: DestinoRequest): Observable<BaseResponse> {
+    const requestUrl = `${env.api}${endpoint.DESTINO_REGISTER}`;
+    const formData = this._builFormDataDestino(Destino);
+    return this._http.post(requestUrl, formData).pipe(
       map((resp: BaseResponse) => {
         if (resp.isSuccess) {
-          this.logAction("Registro", null, Pod);
+          this.logAction("Registro", null, Destino);
         }
         return resp;
       })
     );
   }
 
-  PodEdit(
+  DestinoEdit(
     id: number,
-    Pod: PodRequest
+    Destino: DestinoRequest
   ): Observable<BaseResponse> {
-    const requestUrl = `${env.api}${endpoint.POD_EDIT}${id}`;
-    return this._http.put<BaseResponse>(requestUrl, Pod).pipe(
+    const requestUrl = `${env.api}${endpoint.DESTINO_EDIT}${id}`;
+    const formData = this._builFormDataDestino(Destino);
+    return this._http.put<BaseResponse>(requestUrl, formData).pipe(
       map((resp: BaseResponse) => {
         if (resp.isSuccess) {
-          this.logAction("Edición", id, Pod);
+          this.logAction("Edición", id, Destino);
         }
         return resp;
       })
     );;
   }
 
-  PodRemove(id: number): Observable<void> {
-    const requestUrl = `${env.api}${endpoint.POD_REMOVE}${id}`;
+  DestinoRemove(id: number): Observable<void> {
+    const requestUrl = `${env.api}${endpoint.DESTINO_REMOVE}${id}`;
     return this._http.put(requestUrl, "").pipe(
       map((resp: BaseResponse) => {
         if (resp.isSuccess) {
@@ -114,5 +116,14 @@ export class PodService {
         }
       })
     );
+  }
+
+  private _builFormDataDestino(Destino: DestinoRequest): FormData {
+    const formData = new FormData();
+    formData.append("nombre", Destino.nombre),
+      formData.append("imagen", Destino.imagen),
+      formData.append("estado", Destino.estado.toString());
+
+    return formData;
   }
 }

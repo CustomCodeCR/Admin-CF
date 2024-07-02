@@ -79,6 +79,20 @@ const childrenRoutes: VexRoutes = [
     data: { key: "9" },
   },
   {
+    path: "origen",
+    loadChildren: () =>
+      import("./pages/origen/origen.module").then((m) => m.OrigenModule),
+    canActivate: [AuthGuard],
+    data: { key: "9" },
+  },
+  {
+    path: "destino",
+    loadChildren: () =>
+      import("./pages/destino/destino.module").then((m) => m.DestinoModule),
+    canActivate: [AuthGuard],
+    data: { key: "9" },
+  },
+  {
     path: "**",
     component: NotFoundComponent,
   },
