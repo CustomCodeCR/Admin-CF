@@ -173,23 +173,13 @@ export class AppComponent implements OnDestroy {
           children: [
             {
               type: 'link',
-              label: 'Origen',
-              route: 'origen',
+              label: 'Paises',
+              route: 'paises',
             },
             {
               type: 'link',
-              label: 'POL',
-              route: 'pol',
-            },
-            {
-              type: 'link',
-              label: 'Destino',
-              route: 'destino',
-            },
-            {
-              type: 'link',
-              label: 'POD',
-              route: 'pod',
+              label: 'Puertos',
+              route: 'puertos',
             },
           ],
         },

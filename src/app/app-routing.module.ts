@@ -65,30 +65,16 @@ const childrenRoutes: VexRoutes = [
     data: { key: "8" },
   },
   {
-    path: "pol",
+    path: "puertos",
     loadChildren: () =>
       import("./pages/pol/pol.module").then((m) => m.PolModule),
     canActivate: [AuthGuard],
     data: { key: "9" },
   },
   {
-    path: "pod",
-    loadChildren: () =>
-      import("./pages/pod/pod.module").then((m) => m.PodModule),
-    canActivate: [AuthGuard],
-    data: { key: "9" },
-  },
-  {
-    path: "origen",
+    path: "paises",
     loadChildren: () =>
       import("./pages/origen/origen.module").then((m) => m.OrigenModule),
-    canActivate: [AuthGuard],
-    data: { key: "9" },
-  },
-  {
-    path: "destino",
-    loadChildren: () =>
-      import("./pages/destino/destino.module").then((m) => m.DestinoModule),
     canActivate: [AuthGuard],
     data: { key: "9" },
   },

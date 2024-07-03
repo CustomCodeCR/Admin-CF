@@ -9,7 +9,7 @@ import { UsuarioSelectService } from "@shared/services/usuario-select.service";
 import { SelectAutoComplete } from "@shared/models/select-autocomplete.interface";
 import { LogsService } from "@shared/services/logs.service";
 import { LogsRequest } from "@shared/models/logs-request.interface";
-import { PodService } from "@shared/services/pod.service";
+import { PolService } from "@shared/services/pol.service";
 
 @Component({
   selector: "vex-whs-manage",
@@ -66,7 +66,7 @@ export class WhsManageComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data,
     private _fb: FormBuilder,
     private _clientSelectService: UsuarioSelectService,
-    private _podSelectService: PodService,
+    private _podSelectService: PolService,
     private _alert: AlertService,
     private _WhsService: WhsService,
     private _logsService: LogsService,
@@ -93,7 +93,7 @@ export class WhsManageComponent implements OnInit {
 
   listSelectPod(): void {
     this._podSelectService
-      .listSelectPod()
+      .listSelectPol()
       .subscribe((resp) => (this.podSelect = resp));
   }
 

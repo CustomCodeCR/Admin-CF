@@ -8,10 +8,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { LogsService } from "@shared/services/logs.service";
 import { LogsRequest } from "@shared/models/logs-request.interface";
 import { SelectAutoComplete } from "@shared/models/select-autocomplete.interface";
-import { PodService } from "@shared/services/pod.service";
 import { PolService } from "@shared/services/pol.service";
 import { OrigenService } from "@shared/services/origen.service";
-import { DestinoService } from "@shared/services/destino.service";
 
 @Component({
   selector: "vex-itinerario-manage",
@@ -56,10 +54,10 @@ export class ItinerarioManageComponent implements OnInit {
     private _alert: AlertService,
     private _logsService: LogsService,
     private _itinerarioService: ItinerarioService,
-    private _podSelectService: PodService,
+    private _podSelectService: PolService,
     private _polSelectService: PolService,
     private _origenSelectService: OrigenService,
-    private _destinoSelectService: DestinoService,
+    private _destinoSelectService: OrigenService,
     public _dialogRef: MatDialogRef<ItinerarioManageComponent>
   ) {
     this.initForm();
@@ -77,7 +75,7 @@ export class ItinerarioManageComponent implements OnInit {
 
   listSelectPod(): void {
     this._podSelectService
-      .listSelectPod()
+      .listSelectPol()
       .subscribe((resp) => (this.podSelect = resp));
   }
 
@@ -95,7 +93,7 @@ export class ItinerarioManageComponent implements OnInit {
 
   listSelectDestino(): void {
     this._destinoSelectService
-      .listSelectDestino()
+      .listSelectOrigen()
       .subscribe((resp) => (this.destinoSelect = resp));
   }
 
