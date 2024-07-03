@@ -230,8 +230,8 @@
 
           <td mat-cell *matCellDef="let row" [ngClass]="column.cssProperty">
             <div
-              *ngIf="row[column.property].icon"
-              [ngClass]="row[column.property].css"
+              *ngIf="row[column.property]?.icon"
+              [ngClass]="row[column.property]?.css"
               [class]="column.action ? 'cursor-pointer' : ''"
               (click)="
                 column.action
@@ -244,8 +244,8 @@
             >
               <mat-icon
                 matTooltipPosition="above"
-                [matTooltip]="row[column.property].tooltip"
-                [icIcon]="row[column.property].icon"
+                [matTooltip]="row[column.property]?.tooltip"
+                [icIcon]="row[column.property]?.icon"
               ></mat-icon>
             </div>
           </td>
