@@ -118,6 +118,14 @@ export class AppComponent implements OnDestroy {
           route: `whs/${item.nombre.replace(/ /g, '-')}`,
         }));
 
+        const controlInventarioItems = response
+        .filter((item) => item.whs === 1)
+        .map((item) => ({
+          type: 'link' as const,
+          label: item.nombre,
+          route: `control-inventario/${item.nombre.replace(/ /g, '-')}`,
+        }));
+
       const updatedNavigationItems: NavigationItem[] = [
         {
           type: 'link',
@@ -153,6 +161,12 @@ export class AppComponent implements OnDestroy {
           label: 'WHS',
           icon: IconsService.prototype.getIcon('icWarehouse'),
           children: whsItems,
+        },
+        {
+          type: 'dropdown',
+          label: 'Control Inventario',
+          icon: IconsService.prototype.getIcon('icWarehouse'),
+          children: controlInventarioItems,
         },
         {
           type: 'link',

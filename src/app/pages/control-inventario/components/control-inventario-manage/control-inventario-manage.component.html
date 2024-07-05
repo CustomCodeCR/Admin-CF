@@ -1,0 +1,64 @@
+<form (ngSubmit)="clientSave()" [formGroup]="form">
+    <div mat-dialog-title class="flex justify-between">
+      <h2 class="headline m-0 text-xl text-accent">
+        <strong>Gestión de Control Inventario</strong>
+      </h2>
+      <button class="text-secondary" mat-dialog-close mat-icon-button>
+        <mat-icon [icIcon]="icClose"></mat-icon>
+      </button>
+    </div>
+    <mat-dialog-content>  
+      <app-select-autocomplete
+        label="Clientes"
+        [control]="form.get('cliente')"
+        [required]="true"
+        [listOptions]="clientSelect"
+      ></app-select-autocomplete>
+  
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>POL</mat-label>
+        <mat-select formControlName="pol">
+          <mat-option *ngFor="let option of pol" [value]="option">{{
+            option
+          }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('pol').hasError('required')"
+          >Campo POL es requerido.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-label>Control Inventario</mat-label>
+      <app-pdf-selector
+        [urlCurrentFile]="this.form.get('controlInventario').value"
+        (selectedFile)="selectedControlInventario($event)"
+      ></app-pdf-selector>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estado">
+          <mat-option
+            *ngFor="let state of configs.statesSelect"
+            [value]="state.value"
+          >
+            {{ state.label }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('estado').hasError('required')">
+          Campo Estado es requerido.
+        </mat-error>
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>CANCELAR</button>
+      <button
+        color="purple"
+        class="bg-accent text-accent-contrast"
+        mat-button
+        type="submit"
+        [disabled]="form.invalid"
+      >
+        GUARDAR
+      </button>
+    </mat-dialog-actions>
+  </form>
+  

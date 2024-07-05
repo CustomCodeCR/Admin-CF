@@ -6,23 +6,22 @@
       class="text-am-purple text-sm h-10 font-medium w-full rounded-xl"
       (click)="fileSelector.click()"
     >
-      Subir archivo PDF <mat-icon [icIcon]="icUpload"></mat-icon>
+      Subir archivo<mat-icon [icIcon]="icUpload"></mat-icon>
     </button>
     <input
       type="file"
       hidden
       #fileSelector
-      accept="application/pdf"
+      [accept]="acceptFileType"
       (change)="selectedFileEvent($event)"
     />
   </div>
   <div>
     <div *ngIf="fileBase64">
-      <embed
+      <iframe
         [src]="fileBase64"
-        type="application/pdf"
         class="w-42 h-32 border border-dashed border-am-main-blue-light rounded flex flex-col justify-between"
-      />
+      ></iframe>
     </div>
     <div *ngIf="urlCurrentFile && !fileBase64">
       <iframe

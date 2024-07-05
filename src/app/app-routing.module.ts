@@ -44,6 +44,13 @@ const childrenRoutes: VexRoutes = [
     data: { key: "5" },
   },
   {
+    path: "control-inventario/:parametro",
+    loadChildren: () =>
+      import("./pages/control-inventario/control-inventario.module").then((m) => m.ControlInventarioModule),
+    canActivate: [AuthGuard],
+    data: { key: "5" },
+  },
+  {
     path: "finance",
     loadChildren: () =>
       import("./pages/finance/finance.module").then((m) => m.FinanceModule),

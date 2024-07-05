@@ -92,6 +92,13 @@ export const endpoint = {
   DESTINO_REGISTER: "Destino/Register/",
   DESTINO_EDIT: "Destino/Edit/",
   DESTINO_REMOVE: "Destino/Remove/",
+
+  //CONTROL INVENTARIO MODULE
+  LIST_CONTROL_INVENTARIO: "ControlInventario",
+  CONTROL_INVENTARIO_BY_ID: "ControlInventario/",
+  CONTROL_INVENTARIO_REGISTER: "ControlInventario/Register/",
+  CONTROL_INVENTARIO_EDIT: "ControlInventario/Edit/",
+  CONTROL_INVENTARIO_REMOVE: "ControlInventario/Remove/",
 };
 
 export const httpOptions = {
