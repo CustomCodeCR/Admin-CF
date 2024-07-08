@@ -86,6 +86,13 @@ const childrenRoutes: VexRoutes = [
     data: { key: "9" },
   },
   {
+    path: "multimedia",
+    loadChildren: () =>
+      import("./pages/multimedia/multimedia.module").then((m) => m.MultimediaModule),
+    canActivate: [AuthGuard],
+    data: { key: "10" },
+  },
+  {
     path: "**",
     component: NotFoundComponent,
   },

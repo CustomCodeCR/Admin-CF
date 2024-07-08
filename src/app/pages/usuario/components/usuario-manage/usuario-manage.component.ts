@@ -45,6 +45,7 @@ export class UsuarioManageComponent implements OnInit {
       { key: "7", name: "Exoneraciones" },
       { key: "8", name: "Logs" },
       { key: "9", name: "Datos" },
+      { key: "10", name: "Multimedia" },
     ],
   };
   isAdmin: boolean = false;

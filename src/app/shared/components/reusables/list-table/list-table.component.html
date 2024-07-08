@@ -109,6 +109,18 @@
           </td>
         </ng-container>
 
+        <ng-container *ngIf="column.type === 'multimedia'" [matColumnDef]="column.property" [sticky]="column.sticky">
+          <th mat-header-cell *matHeaderCellDef [mat-sort-header]="column.sortProperty" [disabled]="!column.sort" [ngClass]="column.cssLabel">
+            {{ column.label }}
+          </th>
+        
+          <td mat-cell *matCellDef="let row">
+            <ng-container>
+              <iframe [src]="sanitizeUrl(row[column.property])" frameborder="0" allowfullscreen class="media-iframe"></iframe>
+            </ng-container>
+          </td>
+        </ng-container>
+
         <ng-container
           *ngIf="column.type === 'currency'"
           [matColumnDef]="column.property"

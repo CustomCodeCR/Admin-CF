@@ -99,6 +99,13 @@ export const endpoint = {
   CONTROL_INVENTARIO_REGISTER: "ControlInventario/Register/",
   CONTROL_INVENTARIO_EDIT: "ControlInventario/Edit/",
   CONTROL_INVENTARIO_REMOVE: "ControlInventario/Remove/",
+
+  //CONTROL INVENTARIO MODULE
+  LIST_MULTIMEDIA: "Multimedia",
+  MULTIMEDIA_BY_ID: "Multimedia/",
+  MULTIMEDIA_REGISTER: "Multimedia/Register/",
+  MULTIMEDIA_EDIT: "Multimedia/Edit/",
+  MULTIMEDIA_REMOVE: "Multimedia/Remove/",
 };
 
 export const httpOptions = {

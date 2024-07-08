@@ -199,6 +199,12 @@ export class AppComponent implements OnDestroy {
         },
         {
           type: 'link',
+          label: 'Multimedia',
+          route: 'multimedia',
+          icon: IconsService.prototype.getIcon('icManage'),
+        },
+        {
+          type: 'link',
           label: 'Logs',
           route: 'logs',
           icon: IconsService.prototype.getIcon('icExoneracion'),

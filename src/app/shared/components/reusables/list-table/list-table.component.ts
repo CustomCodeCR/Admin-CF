@@ -36,6 +36,8 @@ import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
 import { startWith, switchMap } from "rxjs/operators";
 import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { scaleFadeIn400ms } from "src/@vex/animations/scale-fade-in.animation";
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 
 @Component({
   selector: "app-list-table",
@@ -99,12 +101,17 @@ export class ListTableComponent<T> implements OnInit, AfterViewInit, OnChanges {
 
   constructor(
     private _spinner: NgxSpinnerService,
-    private _alert: AlertService
+    private _alert: AlertService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  sanitizeUrl(url: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -15,6 +15,7 @@ export interface TableColumns<T> {
     | "badge"
     | "badge2"
     | "image"
+    | "multimedia"
     | "currency"
     | "textUppercase"
     | "number"

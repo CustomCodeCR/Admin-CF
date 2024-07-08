@@ -6,7 +6,7 @@
       class="text-am-purple text-sm h-10 font-medium w-full rounded-xl"
       (click)="imgSelector.click()"
     >
-      Subir imagen <mat-icon [icIcon]="icUpload"></mat-icon>
+      Subir imagen o video<mat-icon [icIcon]="icUpload"></mat-icon>
     </button>
     <input type="file" hidden #imgSelector (change)="selectedImg($event)" />
   </div>
