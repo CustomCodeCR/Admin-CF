@@ -13,6 +13,8 @@ import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
 import { LogsService } from "@shared/services/logs.service";
 import { LogsRequest } from "@shared/models/logs-request.interface";
+import { UpdateListService } from "@shared/services/update-list.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "vex-itinerario-list",
@@ -23,11 +25,13 @@ import { LogsRequest } from "@shared/models/logs-request.interface";
 export class ItinerarioListComponent implements OnInit {
   component: any;
   user = JSON.parse(localStorage.getItem('users'));
+  private refreshSubscription: Subscription;
 
   constructor(
     customTitle: CustomTitleService,
     public _itinerarioService: ItinerarioService,
     private _logsService: LogsService,
+    private _updateListService: UpdateListService,
     public _dialog: MatDialog
   ) {
     customTitle.set("Itinerarios");
@@ -35,6 +39,13 @@ export class ItinerarioListComponent implements OnInit {
 
   ngOnInit(): void {
     this.component = componentSettings;
+    this.subscribeToRefreshList();
+  }
+
+  ngOnDestroy(): void {
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
   }
 
   setMenu(value: number) {
@@ -232,6 +243,19 @@ export class ItinerarioListComponent implements OnInit {
   }
 
   get getDownloadUrl() {
-    return `itinerario?Download=True`;
+    return `Itinerario?Download=True`;
+  }
+
+  get getUploadUrl() {
+    return `Itinerario/Import/`;
+  }
+
+  private subscribeToRefreshList() {
+    this.refreshSubscription = this._updateListService.refreshList$.subscribe((refresh) => {
+      if (refresh) {
+        this.setGetInputsitinerario(true);
+        console.log("Lista actualizada");
+      }
+    });
   }
 }

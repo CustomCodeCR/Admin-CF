@@ -15,6 +15,7 @@ import icProvider from "@iconify/icons-ic/twotone-group";
 import icDashboard from "@iconify/icons-ic/twotone-dashboard";
 import icCategory from "@iconify/icons-ic/twotone-category";
 import icCloudDownload from "@iconify/icons-ic/twotone-cloud-download";
+import icCloudUpload from "@iconify/icons-ic/twotone-cloud-upload";
 import icToday from "@iconify/icons-ic/twotone-today";
 import icRefresh from "@iconify/icons-ic/twotone-restart-alt";
 import icWarehouse from "@iconify/icons-ic/twotone-widgets";
@@ -110,6 +111,9 @@ export class IconsService {
     }
     if (icon == "icCloudDownload") {
       return icCloudDownload;
+    }
+    if (icon == "icCloudUpload") {
+      return icCloudUpload;
     }
     if (icon == "icToday") {
       return icToday;

@@ -14,6 +14,7 @@ import { FilterDateRangeYmdComponent } from "@shared/components/reusables/filter
 import { ButtonResetFiltersComponent } from "@shared/components/reusables/button-reset-filters/button-reset-filters.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { SelectAutocompleteComponent } from "@shared/components/reusables/select-autocomplete/select-autocomplete.component";
+import { ImportExcelComponent } from "@shared/components/reusables/import-excel/import-excel.component";
 
 @NgModule({
   declarations: [ItinerarioListComponent, ItinerarioManageComponent],
@@ -25,6 +26,7 @@ import { SelectAutocompleteComponent } from "@shared/components/reusables/select
     SearchBoxMultipleComponent,
     MenuComponent,
     ExportExcelComponent,
+    ImportExcelComponent,
     FilterDateRangeYmdComponent,
     ButtonResetFiltersComponent,
     ImgSelectorComponent,

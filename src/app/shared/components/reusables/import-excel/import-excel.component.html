@@ -1,0 +1,9 @@
+<div>
+  <!-- Input de tipo file -->
+  <input type="file" (change)="upload($event)" style="display: none" #fileInput />
+
+  <!-- Botón para abrir el input de tipo file -->
+  <button mat-icon-button [matTooltip]="infoTooltip" class="ml-4 text-primary-contrast" (click)="fileInput.click()">
+    <mat-icon [icIcon]="icCloudUpload"></mat-icon>
+  </button>
+</div>
