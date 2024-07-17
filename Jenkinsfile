@@ -55,7 +55,7 @@ pipeline {
                     sh "docker stop ${CONTAINER_NAME_DEV} || true"
                     sh "docker rm ${CONTAINER_NAME_DEV} || true"
                     
-                    sh "docker-compose -f ${COMPOSE_NAME} up -d"
+                    sh "cd /home/administrador && docker-compose -f ${COMPOSE_NAME} up -d"
                 }
             }
         }
