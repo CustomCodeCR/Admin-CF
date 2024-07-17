@@ -8,6 +8,7 @@ pipeline {
         PROJECT_PATH = '/ruta/a/tu/proyecto'
         PORT_CONTAINER = '80'
         COMPOSE_NAME = 'docker-compose-castrofallas.yml'
+        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials-id' // ID de las credenciales añadidas en Jenkins
     }
 
     stages {
@@ -55,7 +56,10 @@ pipeline {
         success {
             script {
                 echo 'Pipeline succeeded!'
-                sh "docker push ${DOCKER_IMAGE}"
+                withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
+                    sh "docker push ${DOCKER_IMAGE}"
+                }
             }
         }
 
