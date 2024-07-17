@@ -8,6 +8,7 @@ pipeline {
         PORT_CONTAINER = '80'
         COMPOSE_NAME = '/home/administrador/docker-compose-castrofallas.yml'
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials-id'
+        WORKSPACE_TMP_DIR = '/tmp/jenkins'
     }
 
     stages {
