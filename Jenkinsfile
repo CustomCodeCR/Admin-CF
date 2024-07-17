@@ -5,14 +5,28 @@ pipeline {
         DOCKER_IMAGE = 'maulang18/admin.cf:latest'
         CONTAINER_NAME_DEV = 'AdminCFDev'
         PORT_DEV = '10109'
-        PROJECT_PATH = '/ruta/a/tu/proyecto'
         PORT_CONTAINER = '80'
         COMPOSE_NAME = 'docker-compose-castrofallas.yml'
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials-id' // ID de las credenciales añadidas en Jenkins
+        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials-id'
     }
 
     stages {
+        stage('Check Dev Container Running') {
+            steps {
+                script {
+                    def devContainerRunning = sh(script: "docker ps -q -f name=${CONTAINER_NAME_DEV}", returnStdout: true).trim()
+                    if (devContainerRunning) {
+                        env.DEV_CONTAINER_RUNNING = "true"
+                    } else {
+                        env.DEV_CONTAINER_RUNNING = "false"
+                    }
+                }
+            }
+        }
         stage('Docker Build') {
+            when {
+                expression { env.DEV_CONTAINER_RUNNING == 'false' }
+            }
             steps {
                 script {
                     sh "docker build -t ${DOCKER_IMAGE} ."
@@ -25,7 +39,6 @@ pipeline {
             }
             steps {
                 script {
-                    // Detener y eliminar el contenedor de desarrollo si existe
                     sh "docker stop ${CONTAINER_NAME_DEV} || true"
                     sh "docker rm ${CONTAINER_NAME_DEV} || true"
                     
@@ -39,10 +52,6 @@ pipeline {
             }
             steps {
                 script {
-                    // Listar archivos en el directorio actual para verificar la existencia del archivo compose
-                    sh "ls -l ${WORKSPACE}"
-
-                    // Detener y eliminar el contenedor de desarrollo si existe
                     sh "docker stop ${CONTAINER_NAME_DEV} || true"
                     sh "docker rm ${CONTAINER_NAME_DEV} || true"
                     
@@ -53,6 +62,12 @@ pipeline {
     }
 
     post {
+        always {
+            script {
+                echo 'Cleaning up unused Docker images...'
+                sh "docker image prune -f"
+            }
+        }
         success {
             script {
                 echo 'Pipeline succeeded!'
