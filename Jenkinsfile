@@ -24,6 +24,7 @@ pipeline {
                 }
             }
         }
+
         stage('Docker Build') {
             when {
                 expression { env.DEV_CONTAINER_RUNNING == 'false' }
@@ -34,6 +35,7 @@ pipeline {
                 }
             }
         }
+
         stage('Docker Run (Development)') {
             when {
                 expression { env.GIT_BRANCH == 'origin/develop' }
@@ -48,6 +50,7 @@ pipeline {
                 }
             }
         }
+
         stage('Docker Compose Up (Production)') {
             when {
                 expression { env.GIT_BRANCH == 'origin/master' }
@@ -74,6 +77,7 @@ pipeline {
                 sh "docker image prune -f"
             }
         }
+
         success {
             script {
                 echo 'Pipeline succeeded!'
@@ -83,6 +87,7 @@ pipeline {
                 }
             }
         }
+
         failure {
             script {
                 echo 'Pipeline failed!'
