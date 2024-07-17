@@ -98,7 +98,7 @@ export class UsuarioManageComponent implements OnInit {
       telefono: ["", [Validators.required]],
       direccion: ["", [Validators.required]],
       pais: ["", [Validators.required]],
-      paginas: ["1,2,3,4,5,6,7,8,9"],
+      paginas: ["1,2,3,4,5,6,7,8,9,10"],
       imagen: [""],
       estado: ["", [Validators.required]],
     });

@@ -1,11 +1,20 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = 'maulang18/admin.cf:latest'
+        CONTAINER_NAME_DEV = 'AdminCFDev'
+        PORT_DEV = '10109'
+        PROJECT_PATH = '/ruta/a/tu/proyecto'
+        PORT_CONTAINER = '80'
+        COMPOSE_NAME = 'docker-compose-castrofallas.yml'
+    }
+
     stages {
         stage('Docker Build') {
             steps {
                 script {
-                    bat "docker build -t maulang18/admin.cf:latest ."
+                    sh "docker build -t ${DOCKER_IMAGE} ."
                 }
             }
         }
@@ -15,12 +24,11 @@ pipeline {
             }
             steps {
                 script {
-                    // Detener y eliminar el contenedor AdminCFDev si existe
-                    bat 'docker stop AdminCFDev 2>NUL || exit 0'
-                    bat 'docker rm AdminCFDev 2>NUL || exit 0'
+                    // Detener y eliminar el contenedor de desarrollo si existe
+                    sh "docker stop ${CONTAINER_NAME_DEV} || true"
+                    sh "docker rm ${CONTAINER_NAME_DEV} || true"
                     
-                    // Ejecutar el contenedor de desarrollo
-                    bat 'docker run -d -p 10109:80 --name AdminCFDev maulang18/admin.cf:latest'
+                    sh "docker run -d -p ${PORT_DEV}:${PORT_CONTAINER} --name ${CONTAINER_NAME_DEV} ${DOCKER_IMAGE}"
                 }
             }
         }
@@ -30,30 +38,21 @@ pipeline {
             }
             steps {
                 script {
-                    // Detener y eliminar el contenedor AdminCFDev si existe
-                    bat 'docker stop AdminCFDev 2>NUL || exit 0'
-                    bat 'docker rm AdminCFDev 2>NUL || exit 0'
+                    // Detener y eliminar el contenedor de desarrollo si existe
+                    sh "docker stop ${CONTAINER_NAME_DEV} || true"
+                    sh "docker rm ${CONTAINER_NAME_DEV} || true"
                     
-                    // Ejecutar docker-compose para producción
-                    dir('C:/Users/administrador/Desktop/Docker/CastroFallas') {
-                        bat 'docker-compose up -d'
-                    }
+                    sh "docker-compose -f ${COMPOSE_NAME} up -d"
                 }
             }
         }
     }
 
     post {
-        always {
-            script {
-                // Limpieza después de cada ejecución
-                bat 'docker system prune -af'
-            }
-        }
-
         success {
             script {
                 echo 'Pipeline succeeded!'
+                sh "docker push ${DOCKER_IMAGE}"
             }
         }
 
