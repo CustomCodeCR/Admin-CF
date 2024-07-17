@@ -1,11 +1,11 @@
 # Etapa de desarrollo - Instalación de dependencias
-FROM node:22.3.0 as dev-deps
+FROM node:22.3.0 AS dev-deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --force
 
 # Etapa de construcción - Compilación de la aplicación
-FROM dev-deps as builder
+FROM dev-deps AS builder
 COPY . .
 RUN npm run build --prod
 

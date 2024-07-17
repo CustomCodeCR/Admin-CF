@@ -38,6 +38,9 @@ pipeline {
             }
             steps {
                 script {
+                    // Listar archivos en el directorio actual para verificar la existencia del archivo compose
+                    sh "ls -l ${WORKSPACE}"
+
                     // Detener y eliminar el contenedor de desarrollo si existe
                     sh "docker stop ${CONTAINER_NAME_DEV} || true"
                     sh "docker rm ${CONTAINER_NAME_DEV} || true"
