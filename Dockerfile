@@ -7,7 +7,7 @@ RUN npm ci --force
 # Etapa de construcción - Compilación de la aplicación
 FROM dev-deps as builder
 COPY . .
-RUN npm run build
+RUN npm run build --prod
 
 # Etapa de producción - Servidor Nginx
 FROM nginx:1.23.3
