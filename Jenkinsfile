@@ -6,7 +6,7 @@ pipeline {
         CONTAINER_NAME_DEV = 'AdminCFDev'
         PORT_DEV = '10109'
         PORT_CONTAINER = '80'
-        COMPOSE_NAME = 'docker-compose-castrofallas.yml'
+        COMPOSE_NAME = '/home/administrador/docker-compose-castrofallas.yml'
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials-id'
     }
 
@@ -39,10 +39,11 @@ pipeline {
             }
             steps {
                 script {
-                    sh "docker stop ${CONTAINER_NAME_DEV} || true"
-                    sh "docker rm ${CONTAINER_NAME_DEV} || true"
-                    
-                    sh "docker run -d -p ${PORT_DEV}:${PORT_CONTAINER} --name ${CONTAINER_NAME_DEV} ${DOCKER_IMAGE}"
+                    if (env.DEV_CONTAINER_RUNNING == 'true') {
+                        echo 'Development container is already running.'
+                    } else {
+                        sh "docker run -d -p ${PORT_DEV}:${PORT_CONTAINER} --name ${CONTAINER_NAME_DEV} ${DOCKER_IMAGE}"
+                    }
                 }
             }
         }
@@ -52,10 +53,14 @@ pipeline {
             }
             steps {
                 script {
-                    sh "docker stop ${CONTAINER_NAME_DEV} || true"
-                    sh "docker rm ${CONTAINER_NAME_DEV} || true"
-                    
-                    sh "cd /home/administrador && docker-compose -f ${COMPOSE_NAME} up -d"
+                    def devContainerRunning = sh(script: "docker ps -q -f name=${CONTAINER_NAME_DEV}", returnStdout: true).trim()
+                    if (devContainerRunning) {
+                        sh "docker stop ${CONTAINER_NAME_DEV} || true"
+                        sh "docker rm ${CONTAINER_NAME_DEV} || true"
+                    }
+                    dir('/home/administrador') {
+                        sh "docker-compose -f ${COMPOSE_NAME} up -d"
+                    }
                 }
             }
         }
@@ -77,7 +82,6 @@ pipeline {
                 }
             }
         }
-
         failure {
             script {
                 echo 'Pipeline failed!'
