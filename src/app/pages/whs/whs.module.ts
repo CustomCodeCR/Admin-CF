@@ -14,6 +14,7 @@ import { WhsManageComponent } from "./components/whs-manage/whs-manage.component
 import { WhsListComponent } from "./components/whs-list/whs-list.component";
 import { PdfSelectorComponent } from "@shared/components/reusables/pdf-selector/pdf-selector.component";
 import { SelectAutocompleteComponent } from "@shared/components/reusables/select-autocomplete/select-autocomplete.component";
+import { ImportExcelComponent } from "@shared/components/reusables/import-excel/import-excel.component";
 
 @NgModule({
   declarations: [WhsManageComponent, WhsListComponent],
@@ -25,6 +26,7 @@ import { SelectAutocompleteComponent } from "@shared/components/reusables/select
     SearchBoxMultipleComponent,
     MenuComponent,
     ExportExcelComponent,
+    ImportExcelComponent,
     FilterDateRangeYmdComponent,
     ButtonResetFiltersComponent,
     ImgSelectorComponent,

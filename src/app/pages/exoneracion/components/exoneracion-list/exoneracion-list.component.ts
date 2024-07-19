@@ -14,6 +14,8 @@ import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
 import { LogsService } from "@shared/services/logs.service";
 import { LogsRequest } from "@shared/models/logs-request.interface";
+import { Subscription } from "rxjs";
+import { UpdateListService } from "@shared/services/update-list.service";
 
 @Component({
   selector: "vex-Exoneracion-list",
@@ -24,11 +26,13 @@ import { LogsRequest } from "@shared/models/logs-request.interface";
 export class ExoneracionListComponent implements OnInit {
   component: any;
   user = JSON.parse(localStorage.getItem('users'));
+  private refreshSubscription: Subscription;
 
   constructor(
     customTitle: CustomTitleService,
     private _logsService: LogsService,
     public _ExoneracionService: ExoneracionService,
+    private _updateListService: UpdateListService,
     public _dialog: MatDialog
   ) {
     customTitle.set("Exoneracion");
@@ -191,5 +195,18 @@ export class ExoneracionListComponent implements OnInit {
 
   get getDownloadUrl() {
     return `Exoneracion?Download=True`;
+  }
+
+  get getUploadUrl() {
+    return `Exoneracion/Import/`;
+  }
+
+  private subscribeToRefreshList() {
+    this.refreshSubscription = this._updateListService.refreshList$.subscribe((refresh) => {
+      if (refresh) {
+        this.setGetInputsExoneracion(true);
+        console.log("Lista actualizada");
+      }
+    });
   }
 }
