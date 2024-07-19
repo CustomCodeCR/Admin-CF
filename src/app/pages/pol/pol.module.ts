@@ -14,6 +14,7 @@ import { ButtonResetFiltersComponent } from '@shared/components/reusables/button
 import { ImgSelectorComponent } from '@shared/components/reusables/img-selector/img-selector.component';
 import { PdfSelectorComponent } from '@shared/components/reusables/pdf-selector/pdf-selector.component';
 import { SelectAutocompleteComponent } from '@shared/components/reusables/select-autocomplete/select-autocomplete.component';
+import { ImportExcelComponent } from '@shared/components/reusables/import-excel/import-excel.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { SelectAutocompleteComponent } from '@shared/components/reusables/select
     SearchBoxMultipleComponent,
     MenuComponent,
     ExportExcelComponent,
+    ImportExcelComponent,
     FilterDateRangeYmdComponent,
     ButtonResetFiltersComponent,
     ImgSelectorComponent,

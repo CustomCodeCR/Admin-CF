@@ -15,6 +15,7 @@ import { ImgSelectorComponent } from '@shared/components/reusables/img-selector/
 import { PdfSelectorComponent } from '@shared/components/reusables/pdf-selector/pdf-selector.component';
 import { SelectAutocompleteComponent } from '@shared/components/reusables/select-autocomplete/select-autocomplete.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ImportExcelComponent } from '@shared/components/reusables/import-excel/import-excel.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     SearchBoxMultipleComponent,
     MenuComponent,
     ExportExcelComponent,
+    ImportExcelComponent,
     FilterDateRangeYmdComponent,
     ButtonResetFiltersComponent,
     ImgSelectorComponent,

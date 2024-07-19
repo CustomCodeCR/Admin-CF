@@ -13,6 +13,8 @@ import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
 import { LogsRequest } from "@shared/models/logs-request.interface";
 import { LogsService } from "@shared/services/logs.service";
+import { Subscription } from "rxjs";
+import { UpdateListService } from "@shared/services/update-list.service";
 
 @Component({
   selector: "vex-usuario-list",
@@ -23,11 +25,13 @@ import { LogsService } from "@shared/services/logs.service";
 export class UsuarioListComponent implements OnInit {
   component: any;
   user = JSON.parse(localStorage.getItem('users'));
+  private refreshSubscription: Subscription;
 
   constructor(
     customTitle: CustomTitleService,
     public _usuarioService: UsuarioService,
     private _logsService: LogsService,
+    private _updateListService: UpdateListService,
     public _dialog: MatDialog
   ) {
     customTitle.set("Usuarios");
@@ -187,5 +191,18 @@ export class UsuarioListComponent implements OnInit {
 
   get getDownloadUrl() {
     return `usuario?Download=True`;
+  }
+
+  get getUploadUrl() {
+    return `Usuario/Import/`;
+  }
+
+  private subscribeToRefreshList() {
+    this.refreshSubscription = this._updateListService.refreshList$.subscribe((refresh) => {
+      if (refresh) {
+        this.setGetInputsUsuario(true);
+        console.log("Lista actualizada");
+      }
+    });
   }
 }

@@ -13,6 +13,8 @@ import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
 import { LogsService } from "@shared/services/logs.service";
 import { LogsRequest } from "@shared/models/logs-request.interface";
+import { Subscription } from "rxjs";
+import { UpdateListService } from "@shared/services/update-list.service";
 
 @Component({
   selector: "vex-noticia-list",
@@ -23,11 +25,13 @@ import { LogsRequest } from "@shared/models/logs-request.interface";
 export class NoticiaListComponent implements OnInit {
   component: any;
   user = JSON.parse(localStorage.getItem('users'));
+  private refreshSubscription: Subscription;
 
   constructor(
     customTitle: CustomTitleService,
     public _noticiaService: NoticiaService,
     private _logsService: LogsService,
+    private _updateListService: UpdateListService,
     public _dialog: MatDialog
   ) {
     customTitle.set("Noticias");
@@ -186,5 +190,18 @@ export class NoticiaListComponent implements OnInit {
 
   get getDownloadUrl() {
     return `noticia?Download=True`;
+  }
+
+  get getUploadUrl() {
+    return `Noticia/Import/`;
+  }
+
+  private subscribeToRefreshList() {
+    this.refreshSubscription = this._updateListService.refreshList$.subscribe((refresh) => {
+      if (refresh) {
+        this.setGetInputsnoticia(true);
+        console.log("Lista actualizada");
+      }
+    });
   }
 }

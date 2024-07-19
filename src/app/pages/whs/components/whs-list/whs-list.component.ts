@@ -15,6 +15,8 @@ import Swal from "sweetalert2";
 import { ActivatedRoute } from "@angular/router";
 import { LogsService } from "@shared/services/logs.service";
 import { LogsRequest } from "@shared/models/logs-request.interface";
+import { Subscription } from "rxjs";
+import { UpdateListService } from "@shared/services/update-list.service";
 
 @Component({
   selector: "vex-Whs-list",
@@ -27,12 +29,14 @@ export class WhsListComponent implements OnInit {
   parametro: any;
   pol: string;
   user = JSON.parse(localStorage.getItem('users'));
+  private refreshSubscription: Subscription;
 
   constructor(
     customTitle: CustomTitleService,
     public _whsService: WhsService,
     public _dialog: MatDialog,
     private _logsService: LogsService,
+    private _updateListService: UpdateListService,
     private route: ActivatedRoute
   ) {
     customTitle.set("Whs");
@@ -205,5 +209,18 @@ export class WhsListComponent implements OnInit {
 
   get getDownloadUrl() {
     return `Whs?whs=${this.pol}&Download=True`;
+  }
+
+  get getUploadUrl() {
+    return `Whs/Import?whs=${this.pol}`;
+  }
+
+  private subscribeToRefreshList() {
+    this.refreshSubscription = this._updateListService.refreshList$.subscribe((refresh) => {
+      if (refresh) {
+        this.setGetInputsWhs(true);
+        console.log("Lista actualizada");
+      }
+    });
   }
 }

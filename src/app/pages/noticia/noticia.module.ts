@@ -12,6 +12,7 @@ import { ExportExcelComponent } from "@shared/components/reusables/export-excel/
 import { FilterDateRangeYmdComponent } from "@shared/components/reusables/filter-date-range-ymd/filter-date-range-ymd.component";
 import { ButtonResetFiltersComponent } from "@shared/components/reusables/button-reset-filters/button-reset-filters.component";
 import { ImgSelectorComponent } from "@shared/components/reusables/img-selector/img-selector.component";
+import { ImportExcelComponent } from "@shared/components/reusables/import-excel/import-excel.component";
 
 @NgModule({
   declarations: [NoticiaListComponent, NoticiaManageComponent],
@@ -23,6 +24,7 @@ import { ImgSelectorComponent } from "@shared/components/reusables/img-selector/
     SearchBoxMultipleComponent,
     MenuComponent,
     ExportExcelComponent,
+    ImportExcelComponent,
     FilterDateRangeYmdComponent,
     ButtonResetFiltersComponent,
     ImgSelectorComponent,

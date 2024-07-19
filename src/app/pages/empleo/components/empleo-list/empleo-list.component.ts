@@ -13,6 +13,8 @@ import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
 import { LogsRequest } from "@shared/models/logs-request.interface";
 import { LogsService } from "@shared/services/logs.service";
+import { Subscription } from "rxjs";
+import { UpdateListService } from "@shared/services/update-list.service";
 
 @Component({
   selector: "vex-empleo-list",
@@ -23,11 +25,13 @@ import { LogsService } from "@shared/services/logs.service";
 export class EmpleoListComponent implements OnInit {
   component: any;
   user = JSON.parse(localStorage.getItem('users'));
+  private refreshSubscription: Subscription;
 
   constructor(
     customTitle: CustomTitleService,
     private _logsService: LogsService,
     public _empleoService: EmpleoService,
+    private _updateListService: UpdateListService,
     public _dialog: MatDialog
   ) {
     customTitle.set("Empleos");
@@ -186,5 +190,18 @@ export class EmpleoListComponent implements OnInit {
 
   get getDownloadUrl() {
     return `empleo?Download=True`;
+  }
+
+  get getUploadUrl() {
+    return `Empleo/Import/`;
+  }
+
+  private subscribeToRefreshList() {
+    this.refreshSubscription = this._updateListService.refreshList$.subscribe((refresh) => {
+      if (refresh) {
+        this.setGetInputsempleo(true);
+        console.log("Lista actualizada");
+      }
+    });
   }
 }

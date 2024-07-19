@@ -13,6 +13,8 @@ import { componentSettings } from './pol-list-config';
 import { PolManageComponent } from '../pol-manage/pol-manage.component';
 import Swal from 'sweetalert2';
 import { LogsRequest } from '@shared/models/logs-request.interface';
+import { Subscription } from 'rxjs';
+import { UpdateListService } from '@shared/services/update-list.service';
 
 @Component({
   selector: 'vex-pol-list',
@@ -23,11 +25,13 @@ import { LogsRequest } from '@shared/models/logs-request.interface';
 export class PolListComponent implements OnInit {
   component: any;
   user = JSON.parse(localStorage.getItem('users'));
+  private refreshSubscription: Subscription;
 
   constructor(
     customTitle: CustomTitleService,
     public _polService: PolService,
     private _logsService: LogsService,
+    private _updateListService: UpdateListService,
     public _dialog: MatDialog
   ) {customTitle.set("Pol"); }
 
@@ -184,5 +188,18 @@ export class PolListComponent implements OnInit {
 
   get getDownloadUrl() {
     return `pol?Download=True`;
+  }
+
+  get getUploadUrl() {
+    return `Pol/Import/`;
+  }
+
+  private subscribeToRefreshList() {
+    this.refreshSubscription = this._updateListService.refreshList$.subscribe((refresh) => {
+      if (refresh) {
+        this.setGetInputsPol(true);
+        console.log("Lista actualizada");
+      }
+    });
   }
 }
