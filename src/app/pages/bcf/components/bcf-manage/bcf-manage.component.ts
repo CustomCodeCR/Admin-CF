@@ -19,7 +19,7 @@ export class BcfManageComponent implements OnInit {
   icClose = IconsService.prototype.getIcon("icClose");
   configs = configs;
   clientSelect: SelectAutoComplete[];
-  user = JSON.parse(localStorage.getItem('users'));
+  user = JSON.parse(localStorage.getItem("users"));
 
   form: FormGroup;
 
@@ -27,7 +27,7 @@ export class BcfManageComponent implements OnInit {
     this.form = this._fb.group({
       id: [0, [Validators.required]],
       idtra: ["", [Validators.required]],
-      cliente: ["", [Validators.required]],
+      cliente: [""],
       estado: ["1", [Validators.required]],
     });
   }
@@ -46,12 +46,26 @@ export class BcfManageComponent implements OnInit {
 
   ngOnInit(): void {
     this.listSelectClients();
+    if (this.data.data != null) {
+      this.clientById(this.data.data.id);
+    }
   }
 
   listSelectClients(): void {
     this._clientSelectService
       .listSelectUsuarios()
       .subscribe((resp) => (this.clientSelect = resp));
+  }
+
+  clientById(id: number): void {
+    this._BcfService.BcfById(id).subscribe((resp) => {
+      this.form.reset({
+        id: resp.id,
+        idtra: resp.idtra,
+        cliente: resp.cliente,
+        estado: resp.estado,
+      });
+    });
   }
 
   clientSave(): void {
@@ -65,32 +79,48 @@ export class BcfManageComponent implements OnInit {
     const data = this.form.value;
 
     if (id > 0) {
-      
+      this.clientEdit(id, data);
     } else {
       this.clientRegister(data);
     }
   }
 
   clientRegister(data): void {
-    this._BcfService
-      .BcfRegister(data)
-      .subscribe((resp) => {
-        if (resp.isSuccess) {
-          this._alert.success("Excelente", resp.message);
-          this._dialogRef.close(true);
+    this._BcfService.BcfRegister(data).subscribe((resp) => {
+      if (resp.isSuccess) {
+        this._alert.success("Excelente", resp.message);
+        this._dialogRef.close(true);
 
-          const log: LogsRequest = {
-            usuario: `${this.user.family_name}`,
-            modulo: "Bcf",
-            tipoMetodo: "Registro",
-            parametros: JSON.stringify(data),
-            estado: 1
-          };
-          this._logsService.LogRegister(log).subscribe();
-        } else {
-          this._alert.warn("Atención", resp.message);
-        }
-      });
+        const log: LogsRequest = {
+          usuario: `${this.user.family_name}`,
+          modulo: "Bcf",
+          tipoMetodo: "Registro",
+          parametros: JSON.stringify(data),
+          estado: 1,
+        };
+        this._logsService.LogRegister(log).subscribe();
+      } else {
+        this._alert.warn("Atención", resp.message);
+      }
+    });
+  }
+
+  clientEdit(id: number, data): void {
+    this._BcfService.BcfEdit(id, data).subscribe((resp) => {
+      if (resp.isSuccess) {
+        this._alert.success("Excelente", resp.message);
+        this._dialogRef.close(true);
+
+        const log: LogsRequest = {
+          usuario: `${this.user.family_name}`,
+          modulo: "Bcf",
+          tipoMetodo: "Edición",
+          parametros: JSON.stringify(data),
+          estado: 1,
+        };
+        this._logsService.LogRegister(log).subscribe();
+      }
+    });
   }
 
   getFormattedDate(): string {

@@ -124,6 +124,18 @@ const tableColumns: TableColumns<BcfResponse>[] = [
     visible: true,
     download: true,
   },
+  {
+    label: "",
+    cssLabel: [],
+    property: "icEdit",
+    cssProperty: [],
+    type: "icon",
+    action: "edit",
+    sticky: false,
+    sort: false,
+    visible: true,
+    download: false,
+  },
 ];
 
 const filters = {

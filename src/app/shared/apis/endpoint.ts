@@ -109,7 +109,9 @@ export const endpoint = {
 
   //BCF
   LIST_BCF: "Bcf",
-  BCF_REGISTER: "Bcf/Register/"
+  BCF_BY_ID: "Bcf/",
+  BCF_REGISTER: "Bcf/Register/",
+  BCF_EDIT: "Bcf/Edit/",
 };
 
 export const httpOptions = {
