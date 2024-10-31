@@ -46,7 +46,8 @@ export class UsuarioManageComponent implements OnInit {
       { key: "8", name: "Logs" },
       { key: "9", name: "Datos" },
       { key: "10", name: "Multimedia" },
-      { key: "11", name: "Aduanas" }
+      { key: "11", name: "Aduanas" },
+      { key: "12", name: "BCF" }
     ],
   };
   isAdmin: boolean = false;
@@ -99,7 +100,7 @@ export class UsuarioManageComponent implements OnInit {
       telefono: ["", [Validators.required]],
       direccion: ["", [Validators.required]],
       pais: ["", [Validators.required]],
-      paginas: ["1,2,3,4,5,6,7,8,9,10,11"],
+      paginas: ["1,2,3,4,5,6,7,8,9,10,11,12"],
       imagen: [""],
       estado: ["", [Validators.required]],
     });

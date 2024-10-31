@@ -135,6 +135,12 @@ export class AppComponent implements OnDestroy {
         },
         {
           type: 'link',
+          label: 'BCF',
+          route: 'bcf',
+          icon: IconsService.prototype.getIcon('icExoneracion'),
+        },
+        {
+          type: 'link',
           label: 'Itinerarios',
           route: 'itinerarios',
           icon: IconsService.prototype.getIcon('icCalendar'),

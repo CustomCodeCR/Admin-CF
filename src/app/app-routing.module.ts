@@ -93,6 +93,13 @@ const childrenRoutes: VexRoutes = [
     data: { key: "10" },
   },
   {
+    path: "bcf",
+    loadChildren: () =>
+      import("./pages/bcf/bcf.module").then((m) => m.BcfModule),
+    canActivate: [AuthGuard],
+    data: { key: "12" },
+  },
+  {
     path: "**",
     component: NotFoundComponent,
   },

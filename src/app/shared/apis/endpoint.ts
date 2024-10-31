@@ -106,6 +106,10 @@ export const endpoint = {
   MULTIMEDIA_REGISTER: "Multimedia/Register/",
   MULTIMEDIA_EDIT: "Multimedia/Edit/",
   MULTIMEDIA_REMOVE: "Multimedia/Remove/",
+
+  //BCF
+  LIST_BCF: "Bcf",
+  BCF_REGISTER: "Bcf/Register/"
 };
 
 export const httpOptions = {
