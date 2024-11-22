@@ -48,10 +48,10 @@ export class UsuarioManageComponent implements OnInit {
       { key: "9", name: "Datos" },
       { key: "10", name: "Multimedia" },
       { key: "11", name: "Aduanas" },
-      { key: "12", name: "BCF" }
-      { key: "13", name: "Servicio al Cliente - Cotización" }
-      { key: "14", name: "Almacén Fiscal - Cotización" }
-      { key: "15", name: "Consolidadora de Carga - Cotización" }
+      { key: "12", name: "BCF" },
+      { key: "13", name: "Servicio al Cliente - Cotización" },
+      { key: "14", name: "Almacén Fiscal - Cotización" },
+      { key: "15", name: "Consolidadora de Carga - Cotización" },
     ],
   };
   isAdmin: boolean = false;
@@ -59,7 +59,7 @@ export class UsuarioManageComponent implements OnInit {
   selectedRoleId: number;
 
   form: FormGroup;
-  user = JSON.parse(localStorage.getItem('users'));
+  user = JSON.parse(localStorage.getItem("users"));
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
@@ -104,7 +104,7 @@ export class UsuarioManageComponent implements OnInit {
       telefono: ["", [Validators.required]],
       direccion: ["", [Validators.required]],
       pais: ["", [Validators.required]],
-      paginas: ["1,2,3,4,5,6,7,8,9,10,11,12"],
+      paginas: ["1,2,3,4,5,6,7,8,9,10,11,12,13,14,15"],
       imagen: [""],
       estado: ["", [Validators.required]],
     });
@@ -150,7 +150,7 @@ export class UsuarioManageComponent implements OnInit {
   clientById(id: number): void {
     this._usuarioService.UsuarioById(id).subscribe((resp) => {
       const selectedPages: string[] = resp.paginas.split(",");
-      
+
       this.updateRolList(resp.idRol);
 
       this.form.reset({
@@ -200,7 +200,7 @@ export class UsuarioManageComponent implements OnInit {
           modulo: "Usuario",
           tipoMetodo: "Registro",
           parametros: JSON.stringify(data),
-          estado: 1
+          estado: 1,
         };
         this._logsService.LogRegister(log).subscribe();
       } else {
@@ -220,7 +220,7 @@ export class UsuarioManageComponent implements OnInit {
           modulo: "Usuario",
           tipoMetodo: "Edición",
           parametros: JSON.stringify(data),
-          estado: 1
+          estado: 1,
         };
         this._logsService.LogRegister(log).subscribe();
       }
