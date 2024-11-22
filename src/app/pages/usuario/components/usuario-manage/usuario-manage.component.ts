@@ -34,6 +34,7 @@ export class UsuarioManageComponent implements OnInit {
       { key: "13", name: "WHS" },
       { key: "21", name: "My Finance" },
       { key: "22", name: "Directorio Interno" },
+      { key: "23", name: "Cotización" },
     ],
     3: [
       { key: "1", name: "Usuarios" },
@@ -48,6 +49,9 @@ export class UsuarioManageComponent implements OnInit {
       { key: "10", name: "Multimedia" },
       { key: "11", name: "Aduanas" },
       { key: "12", name: "BCF" }
+      { key: "13", name: "Servicio al Cliente - Cotización" }
+      { key: "14", name: "Almacén Fiscal - Cotización" }
+      { key: "15", name: "Consolidadora de Carga - Cotización" }
     ],
   };
   isAdmin: boolean = false;
