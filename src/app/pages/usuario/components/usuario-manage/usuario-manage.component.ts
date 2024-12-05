@@ -52,6 +52,7 @@ export class UsuarioManageComponent implements OnInit {
       { key: "13", name: "Servicio al Cliente - Cotización" },
       { key: "14", name: "Almacén Fiscal - Cotización" },
       { key: "15", name: "Consolidadora de Carga - Cotización" },
+      { key: "16", name: "Panamá" },
     ],
   };
   isAdmin: boolean = false;
@@ -104,7 +105,7 @@ export class UsuarioManageComponent implements OnInit {
       telefono: ["", [Validators.required]],
       direccion: ["", [Validators.required]],
       pais: ["", [Validators.required]],
-      paginas: ["1,2,3,4,5,6,7,8,9,10,11,12,13,14,15"],
+      paginas: ["1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16"],
       imagen: [""],
       estado: ["", [Validators.required]],
     });
