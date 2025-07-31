@@ -62,6 +62,7 @@ export const endpoint = {
 
   //POL MODULE
   LIST_POL: "Pol",
+  LIST_POL_WHS: "Pol/Whs/Select",
   LIST_SELECT_POL_WHS: "Pol/Whs",
   LIST_SELECT_POL: "Pol/Select",
   POL_BY_ID: "Pol/",

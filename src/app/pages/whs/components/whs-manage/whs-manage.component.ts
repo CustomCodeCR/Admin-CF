@@ -19,22 +19,14 @@ import { PolService } from "@shared/services/pol.service";
 export class WhsManageComponent implements OnInit {
   icClose = IconsService.prototype.getIcon("icClose");
   configs = configs;
-  pol = [
-    "Ciudad Guatemala, Guatemala",
-    "San Pedro Sula, Honduras",
-    "Miami, USA",
-    "CFZ, Panama",
-    "SJO, CRC",
-    "Ningbo, China",
-    "Shanghai, China",
-  ];
+  polSelect: SelectAutoComplete[];
   status = ["En WHS", "Preparando para Envio", "Salida"];
   tipoRegistro = ["Ingreso", "Salida"];
   clientSelect: SelectAutoComplete[];
   podSelect: SelectAutoComplete[];
 
   form: FormGroup;
-  user = JSON.parse(localStorage.getItem('users'));
+  user = JSON.parse(localStorage.getItem("users"));
 
   initForm(): void {
     this.form = this._fb.group({
@@ -76,13 +68,28 @@ export class WhsManageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.listPolWhs();
     this.listSelectClients();
     this.listSelectPod();
+    console.log(this.data.data);
     if (this.data.data != null) {
       this.clientById(this.data.data.id);
     }
+  }
 
-    this.pol = [this.data.parametro.replace(/-/g, ' ')]
+  listPolWhs(): void {
+    this._podSelectService.listSelectPol().subscribe((resp) => {
+      if (this.data?.data?.pol) {
+        // Si hay datos cargados, usar el valor exacto del backend
+        this.polSelect = resp.filter(
+          (pol) => pol.description === this.data.data.pol
+        );
+      } else {
+        // Si es nuevo, usar el parámetro
+        const filtro = this.data.parametro.replace(/-/g, " ");
+        this.polSelect = resp.filter((pol) => pol.description === filtro);
+      }
+    });
   }
 
   listSelectClients(): void {
@@ -181,7 +188,7 @@ export class WhsManageComponent implements OnInit {
           modulo: "WHS",
           tipoMetodo: "Registro",
           parametros: JSON.stringify(data),
-          estado: 1
+          estado: 1,
         };
         this._logsService.LogRegister(log).subscribe();
       } else {
@@ -201,7 +208,7 @@ export class WhsManageComponent implements OnInit {
           modulo: "WHS",
           tipoMetodo: "Edición",
           parametros: JSON.stringify(data),
-          estado: 1
+          estado: 1,
         };
         this._logsService.LogRegister(log).subscribe();
       }
